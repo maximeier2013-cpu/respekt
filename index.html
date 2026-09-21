@@ -1,0 +1,957 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RESPEKT - Digitaler Erste-Hilfe-Kasten gegen Cybermobbing</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- React & ReactDOM CDN -->
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <!-- Babel Standalone for JSX compilation in browser -->
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body class="bg-slate-50 text-slate-800 font-sans selection:bg-teal-400 selection:text-slate-900 min-h-screen flex flex-col justify-between">
+    <!-- Root element for React app -->
+    <div id="root"></div>
+
+    <!-- React Application Script -->
+    <script type="text/babel">
+        const { 
+            useState, 
+            useEffect 
+        } = React;
+
+        // Custom icon wrappers using Lucide
+        function Icon({ name, className = "w-5 h-5", ...props }) {
+            useEffect(() => {
+                if (window.lucide) {
+                    window.lucide.createIcons();
+                }
+            });
+            return <i data-lucide={name} className={className} {...props}></i>;
+        }
+
+        function App() {
+            const [activeTab, setActiveTab] = useState('home');
+            const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
+            useEffect(() => {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+                if (window.lucide) {
+                    window.lucide.createIcons();
+                }
+            }, [activeTab]);
+
+            return (
+                <div className="min-h-screen flex flex-col justify-between">
+                    <Header activeTab={activeTab} setActiveTab={setActiveTab} mobileMenuOpen={mobileMenuOpen} setMobileMenuOpen={setMobileMenuOpen} />
+                    <main className="flex-grow">
+                        {activeTab === 'home' && <HomeSection setActiveTab={setActiveTab} />}
+                        {activeTab === 'what-to-do' && <WhatToDoSection />}
+                        {activeTab === 'scenarios' && <ScenariosSection />}
+                        {activeTab === 'chat-simulator' && <ChatSimulatorSection />}
+                        {activeTab === 'check' && <CybermobbingCheckSection />}
+                        {activeTab === 'first-step' && <FirstStepSection setActiveTab={setActiveTab} />}
+                        {activeTab === 'help' && <HelpSection />}
+                        {activeTab === 'project' && <ProjectSection />}
+                        {activeTab === 'qr-code' && <QrCodeSection />}
+                        {activeTab === 'challenge' && <ChallengeSection />}
+                    </main>
+                    <Footer setActiveTab={setActiveTab} />
+                </div>
+            );
+        }
+
+        function Header({ activeTab, setActiveTab, mobileMenuOpen, setMobileMenuOpen }) {
+            const navItems = [
+                { id: 'home', label: 'Startseite' },
+                { id: 'what-to-do', label: 'Was tun?' },
+                { id: 'scenarios', label: 'Situationen' },
+                { id: 'chat-simulator', label: 'Klassenchat' },
+                { id: 'check', label: 'Cybermobbing-Check' },
+                { id: 'first-step', label: 'Erster Schritt' },
+                { id: 'help', label: 'Hilfe' },
+                { id: 'project', label: 'Über das Projekt' },
+                { id: 'qr-code', label: 'QR-Code' },
+                { id: 'challenge', label: 'Challenge' },
+            ];
+
+            return (
+                <header className="sticky top-0 z-50 bg-slate-900/95 backdrop-blur border-b border-slate-800 text-white shadow-md">
+                    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                        <div className="flex items-center justify-between h-20">
+                            <div onClick={() => setActiveTab('home')} className="flex items-center space-x-3 cursor-pointer group">
+                                <div className="w-11 h-11 rounded-xl bg-gradient-to-tr from-teal-400 to-blue-600 flex items-center justify-center shadow-lg group-hover:scale-105 transition-transform text-slate-950 font-bold">
+                                    <Icon name="shield-alert" className="w-6 h-6" />
+                                </div>
+                                <div>
+                                    <span className="text-2xl font-black tracking-wider bg-clip-text text-transparent bg-gradient-to-r from-white via-slate-100 to-teal-300">
+                                        RESPEKT
+                                    </span>
+                                    <p className="text-xs text-teal-400 font-medium tracking-wide">Digitaler Erste-Hilfe-Kasten</p>
+                                </div>
+                            </div>
+
+                            <nav className="hidden xl:flex items-center space-x-1">
+                                {navItems.map((item) => (
+                                    <button
+                                        key={item.id}
+                                        onClick={() => setActiveTab(item.id)}
+                                        className={`px-3 py-2 rounded-lg text-sm font-medium transition-all ${
+                                            activeTab === item.id
+                                                ? 'bg-teal-500 text-slate-950 font-semibold shadow-md'
+                                                : 'text-slate-300 hover:text-white hover:bg-slate-800'
+                                        }`}
+                                    >
+                                        {item.label}
+                                    </button>
+                                ))}
+                            </nav>
+
+                            <div className="xl:hidden flex items-center">
+                                <button
+                                    onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+                                    className="p-2 rounded-lg bg-slate-800 text-slate-300 hover:text-white focus:outline-none focus:ring-2 focus:ring-teal-400"
+                                    aria-label="Menü öffnen"
+                                >
+                                    <Icon name={mobileMenuOpen ? "x" : "menu"} className="w-6 h-6" />
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    {mobileMenuOpen && (
+                        <div className="xl:hidden bg-slate-900 border-b border-slate-800 px-4 pt-2 pb-4 space-y-1">
+                            {navItems.map((item) => (
+                                <button
+                                    key={item.id}
+                                    onClick={() => {
+                                        setActiveTab(item.id);
+                                        setMobileMenuOpen(false);
+                                    }}
+                                    className={`w-full text-left px-4 py-3 rounded-lg text-base font-medium transition-colors ${
+                                        activeTab === item.id
+                                            ? 'bg-teal-500 text-slate-950 font-semibold'
+                                            : 'text-slate-300 hover:bg-slate-800 hover:text-white'
+                                    }`}
+                                >
+                                    {item.label}
+                                </button>
+                            ))}
+                        </div>
+                    )}
+                </header>
+            );
+        }
+
+        function HomeSection({ setActiveTab }) {
+            return (
+                <div className="space-y-16 pb-20">
+                    <section className="relative overflow-hidden bg-gradient-to-b from-slate-900 via-blue-950 to-slate-900 text-white py-20 px-4 sm:px-6 lg:px-8 border-b border-slate-800">
+                        <div className="absolute inset-0 opacity-10 bg-[radial-gradient(#2dd4bf_1px,transparent_1px)] [background-size:16px_16px]"></div>
+                        <div className="max-w-5xl mx-auto text-center relative z-10 space-y-6">
+                            <div className="inline-flex items-center space-x-2 bg-teal-500/10 border border-teal-400/30 px-4 py-1.5 rounded-full text-teal-300 text-sm font-semibold tracking-wide">
+                                <Icon name="sparkles" className="w-4 h-4" />
+                                <span>Schulprojekt „Stark gegen Cybermobbing“</span>
+                            </div>
+                            <h1 className="text-4xl sm:text-6xl font-black tracking-tight leading-tight">
+                                Cybermobbing?<br />
+                                <span className="bg-clip-text text-transparent bg-gradient-to-r from-teal-400 to-blue-400">
+                                    Du musst damit nicht alleine bleiben.
+                                </span>
+                            </h1>
+                            <p className="text-lg sm:text-xl text-slate-300 max-w-3xl mx-auto font-normal leading-relaxed">
+                                Finde heraus, was du tun kannst – egal ob du selbst betroffen bist, jemandem helfen möchtest oder Cybermobbing beobachtet hast.
+                            </p>
+                            <div className="pt-4 flex flex-wrap justify-center gap-4">
+                                <button
+                                    onClick={() => setActiveTab('first-step')}
+                                    className="bg-teal-400 hover:bg-teal-300 text-slate-950 font-bold px-8 py-4 rounded-xl shadow-lg transition-all flex items-center space-x-2 text-base"
+                                >
+                                    <span>Ich brauche jetzt Hilfe</span>
+                                    <Icon name="arrow-right" className="w-5 h-5" />
+                                </button>
+                                <button
+                                    onClick={() => setActiveTab('what-to-do')}
+                                    className="bg-slate-800 hover:bg-slate-700 text-white font-semibold px-8 py-4 rounded-xl border border-slate-700 transition-all text-base"
+                                >
+                                    Was tun?
+                                </button>
+                            </div>
+                        </div>
+                    </section>
+
+                    <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+                        <div className="bg-gradient-to-r from-blue-900 to-slate-900 text-white p-6 sm:p-8 rounded-2xl shadow-xl border border-blue-800 flex flex-col md:flex-row items-center justify-between gap-6 text-center md:text-left">
+                            <div>
+                                <h3 className="text-lg font-bold text-teal-400 tracking-wider uppercase mb-1">Unser Leitgedanke</h3>
+                                <p className="text-xl sm:text-2xl font-black tracking-wide text-white">
+                                    NICHT MITMACHEN. NICHT WEGSCHAUEN. RESPEKT ZEIGEN.
+                                </p>
+                            </div>
+                            <button
+                                onClick={() => setActiveTab('project')}
+                                className="whitespace-nowrap bg-white/10 hover:bg-white/20 text-white font-medium px-5 py-3 rounded-xl border border-white/20 transition-all text-sm"
+                            >
+                                Mehr über das Projekt
+                            </button>
+                        </div>
+                    </div>
+
+                    <section className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+                        <div className="text-center mb-10">
+                            <h2 className="text-2xl sm:text-3xl font-bold text-slate-900">In welcher Situation befindest du dich?</h2>
+                            <p className="text-slate-600 mt-2">Wähle den Bereich, der am besten zu deiner Situation passt:</p>
+                        </div>
+
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div className="bg-white rounded-2xl p-6 sm:p-8 shadow-md border border-slate-200 hover:border-red-300 transition-all flex flex-col justify-between group">
+                                <div>
+                                    <div className="w-12 h-12 rounded-xl bg-red-50 text-red-500 flex items-center justify-center font-bold text-xl mb-4 group-hover:scale-110 transition-transform">
+                                        <Icon name="shield-alert" className="w-6 h-6" />
+                                    </div>
+                                    <span className="inline-block bg-red-100 text-red-700 text-xs font-bold px-3 py-1 rounded-full mb-3">Betroffen</span>
+                                    <h3 className="text-xl font-bold text-slate-900 mb-2">Ich werde gemobbt</h3>
+                                    <p className="text-slate-600 text-sm leading-relaxed mb-6">
+                                        Du bist selbst betroffen und weißt nicht, was du tun kannst? Hol dir hier konkrete Erste-Hilfe-Schritte.
+                                    </p>
+                                </div>
+                                <button
+                                    onClick={() => setActiveTab('what-to-do')}
+                                    className="w-full bg-slate-900 hover:bg-teal-500 hover:text-slate-950 text-white font-semibold py-3 px-4 rounded-xl transition-all flex items-center justify-center space-x-2 text-sm"
+                                >
+                                    <span>Was kann ich tun?</span>
+                                    <Icon name="chevron-right" className="w-4 h-4" />
+                                </button>
+                            </div>
+
+                            <div className="bg-white rounded-2xl p-6 sm:p-8 shadow-md border border-slate-200 hover:border-orange-300 transition-all flex flex-col justify-between group">
+                                <div>
+                                    <div className="w-12 h-12 rounded-xl bg-orange-50 text-orange-500 flex items-center justify-center font-bold text-xl mb-4 group-hover:scale-110 transition-transform">
+                                        <Icon name="users" className="w-6 h-6" />
+                                    </div>
+                                    <span className="inline-block bg-orange-100 text-orange-700 text-xs font-bold px-3 py-1 rounded-full mb-3">Mitschüler helfen</span>
+                                    <h3 className="text-xl font-bold text-slate-900 mb-2">Jemand aus meiner Klasse wird gemobbt</h3>
+                                    <p className="text-slate-600 text-sm leading-relaxed mb-6">
+                                        Du möchtest helfen, weißt aber nicht wie? Erfahre, wie du richtig unterstützt, ohne dich selbst in Gefahr zu bringen.
+                                    </p>
+                                </div>
+                                <button
+                                    onClick={() => setActiveTab('what-to-do')}
+                                    className="w-full bg-slate-900 hover:bg-teal-500 hover:text-slate-950 text-white font-semibold py-3 px-4 rounded-xl transition-all flex items-center justify-center space-x-2 text-sm"
+                                >
+                                    <span>Wie kann ich helfen?</span>
+                                    <Icon name="chevron-right" className="w-4 h-4" />
+                                </button>
+                            </div>
+
+                            <div className="bg-white rounded-2xl p-6 sm:p-8 shadow-md border border-slate-200 hover:border-amber-300 transition-all flex flex-col justify-between group">
+                                <div>
+                                    <div className="w-12 h-12 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center font-bold text-xl mb-4 group-hover:scale-110 transition-transform">
+                                        <Icon name="eye" className="w-6 h-6" />
+                                    </div>
+                                    <span className="inline-block bg-amber-100 text-amber-800 text-xs font-bold px-3 py-1 rounded-full mb-3">Beobachtet</span>
+                                    <h3 className="text-xl font-bold text-slate-900 mb-2">Ich habe Cybermobbing beobachtet</h3>
+                                    <p className="text-slate-600 text-sm leading-relaxed mb-6">
+                                        Du hast etwas gesehen oder in einem Chat mitbekommen? Sieh dir an, warum wegschauen das Problem vergrößert.
+                                    </p>
+                                </div>
+                                <button
+                                    onClick={() => setActiveTab('what-to-do')}
+                                    className="w-full bg-slate-900 hover:bg-teal-500 hover:text-slate-950 text-white font-semibold py-3 px-4 rounded-xl transition-all flex items-center justify-center space-x-2 text-sm"
+                                >
+                                    <span>Was soll ich tun?</span>
+                                    <Icon name="chevron-right" className="w-4 h-4" />
+                                </button>
+                            </div>
+
+                            <div className="bg-white rounded-2xl p-6 sm:p-8 shadow-md border border-slate-200 hover:border-emerald-300 transition-all flex flex-col justify-between group">
+                                <div>
+                                    <div className="w-12 h-12 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center font-bold text-xl mb-4 group-hover:scale-110 transition-transform">
+                                        <Icon name="message-square-warning" className="w-6 h-6" />
+                                    </div>
+                                    <span className="inline-block bg-emerald-100 text-emerald-800 text-xs font-bold px-3 py-1 rounded-full mb-3">Reflektieren</span>
+                                    <h3 className="text-xl font-bold text-slate-900 mb-2">Ich habe selbst etwas Verletzendes geschrieben</h3>
+                                    <p className="text-slate-600 text-sm leading-relaxed mb-6">
+                                        Du hast etwas getan und möchtest die Situation verbessern? Verantwortung übernehmen ist ein starker Schritt.
+                                    </p>
+                                </div>
+                                <button
+                                    onClick={() => setActiveTab('what-to-do')}
+                                    className="w-full bg-slate-900 hover:bg-teal-500 hover:text-slate-950 text-white font-semibold py-3 px-4 rounded-xl transition-all flex items-center justify-center space-x-2 text-sm"
+                                >
+                                    <span>Was jetzt?</span>
+                                    <Icon name="chevron-right" className="w-4 h-4" />
+                                </button>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+            );
+        }
+
+        function WhatToDoSection() {
+            const [activeCategory, setActiveCategory] = useState('self');
+
+            return (
+                <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-10">
+                    <div className="text-center max-w-3xl mx-auto space-y-4">
+                        <h1 className="text-3xl sm:text-4xl font-extrabold text-slate-900">Was tun bei Cybermobbing?</h1>
+                        <p className="text-slate-600 text-base sm:text-lg">
+                            Hier findest du praktische, klare Handlungsschritte für jede Rolle in einer Konfliktsituation.
+                        </p>
+
+                        <div className="flex flex-wrap justify-center gap-2 pt-4">
+                            <button
+                                onClick={() => setActiveCategory('self')}
+                                className={`px-5 py-3 rounded-xl font-semibold text-sm transition-all ${
+                                    activeCategory === 'self' ? 'bg-slate-900 text-white shadow-lg' : 'bg-white text-slate-700 hover:bg-slate-100 border border-slate-200'
+                                }`}
+                            >
+                                Wenn du selbst betroffen bist
+                            </button>
+                            <button
+                                onClick={() => setActiveCategory('other')}
+                                className={`px-5 py-3 rounded-xl font-semibold text-sm transition-all ${
+                                    activeCategory === 'other' ? 'bg-slate-900 text-white shadow-lg' : 'bg-white text-slate-700 hover:bg-slate-100 border border-slate-200'
+                                }`}
+                            >
+                                Wenn jemand anderes betroffen ist
+                            </button>
+                            <button
+                                onClick={() => setActiveCategory('witness')}
+                                className={`px-5 py-3 rounded-xl font-semibold text-sm transition-all ${
+                                    activeCategory === 'witness' ? 'bg-slate-900 text-white shadow-lg' : 'bg-white text-slate-700 hover:bg-slate-100 border border-slate-200'
+                                }`}
+                            >
+                                Wenn du Cybermobbing beobachtest
+                            </button>
+                            <button
+                                onClick={() => setActiveCategory('author')}
+                                className={`px-5 py-3 rounded-xl font-semibold text-sm transition-all ${
+                                    activeCategory === 'author' ? 'bg-slate-900 text-white shadow-lg' : 'bg-white text-slate-700 hover:bg-slate-100 border border-slate-200'
+                                }`}
+                            >
+                                Wenn du selbst etwas geschrieben hast
+                            </button>
+                        </div>
+                    </div>
+
+                    <div className="bg-white rounded-3xl p-6 sm:p-10 shadow-xl border border-slate-200">
+                        {activeCategory === 'self' && (
+                            <div className="space-y-8">
+                                <div className="border-b border-slate-100 pb-6">
+                                    <span className="text-red-600 font-bold text-sm tracking-wide uppercase">Erste Hilfe für Betroffene</span>
+                                    <h2 className="text-2xl font-bold text-slate-900 mt-1">Du wirst gemobbt? Das kannst du jetzt tun:</h2>
+                                </div>
+                                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                                    <div className="bg-slate-50 p-6 rounded-2xl border border-slate-200 space-y-3">
+                                        <div className="w-10 h-10 bg-red-100 text-red-600 rounded-xl flex items-center justify-center font-bold text-lg">1</div>
+                                        <h3 className="font-bold text-slate-900 text-lg">Bleib nicht allein</h3>
+                                        <p className="text-slate-600 text-sm leading-relaxed">Sprich mit einer Person, der du vertraust – sei es in der Familie, im Freundeskreis oder in der Schule.</p>
+                                    </div>
+                                    <div className="bg-slate-50 p-6 rounded-2xl border border-slate-200 space-y-3">
+                                        <div className="w-10 h-10 bg-red-100 text-red-600 rounded-xl flex items-center justify-center font-bold text-lg">2</div>
+                                        <h3 className="font-bold text-slate-900 text-lg">Sichere Beweise</h3>
+                                        <p className="text-slate-600 text-sm leading-relaxed">Screenshots und Nachrichten können später wichtig sein. Lösche nichts voreilig.</p>
+                                    </div>
+                                    <div className="bg-slate-50 p-6 rounded-2xl border border-slate-200 space-y-3">
+                                        <div className="w-10 h-10 bg-red-100 text-red-600 rounded-xl flex items-center justify-center font-bold text-lg">3</div>
+                                        <h3 className="font-bold text-slate-900 text-lg">Nicht zurückmobben</h3>
+                                        <p className="text-slate-600 text-sm leading-relaxed">Versuche nicht, die Situation durch weitere Beleidigungen zu verschärfen.</p>
+                                    </div>
+                                    <div className="bg-slate-50 p-6 rounded-2xl border border-slate-200 space-y-3">
+                                        <div className="w-10 h-10 bg-red-100 text-red-600 rounded-xl flex items-center justify-center font-bold text-lg">4</div>
+                                        <h3 className="font-bold text-slate-900 text-lg">Hilfe holen</h3>
+                                        <p className="text-slate-600 text-sm leading-relaxed">Wende dich an Eltern, Lehrkräfte, Schulsozialarbeit oder andere Vertrauenspersonen.</p>
+                                    </div>
+                                    <div className="bg-red-50 p-6 rounded-2xl border border-red-200 space-y-3 md:col-span-2 lg:col-span-2">
+                                        <div className="w-10 h-10 bg-red-500 text-white rounded-xl flex items-center justify-center font-bold text-lg">5</div>
+                                        <h3 className="font-bold text-red-950 text-lg">Bei akuter Gefahr</h3>
+                                        <p className="text-red-900 text-sm leading-relaxed">Hole sofort Unterstützung von einer erwachsenen Vertrauensperson bzw. den Notfallstellen (z.B. Nummer gegen Kummer 116111).</p>
+                                    </div>
+                                </div>
+                            </div>
+                        )}
+
+                        {activeCategory === 'other' && (
+                            <div className="space-y-8">
+                                <div className="border-b border-slate-100 pb-6">
+                                    <span className="text-orange-600 font-bold text-sm tracking-wide uppercase">Zivilcourage zeigen</span>
+                                    <h2 className="text-2xl font-bold text-slate-900 mt-1">Jemand anderes ist betroffen:</h2>
+                                </div>
+                                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                                    <div className="bg-slate-50 p-6 rounded-2xl border border-slate-200 space-y-3">
+                                        <div className="w-10 h-10 bg-orange-100 text-orange-600 rounded-xl flex items-center justify-center font-bold text-lg">✓</div>
+                                        <h3 className="font-bold text-slate-900 text-lg">Ernst nehmen</h3>
+                                        <p className="text-slate-600 text-sm leading-relaxed">Nimm die Sorgen der betroffenen Person ernst und spiele nichts herunter.</p>
+                                    </div>
+                                    <div className="bg-slate-50 p-6 rounded-2xl border border-slate-200 space-y-3">
+                                        <div className="w-10 h-10 bg-orange-100 text-orange-600 rounded-xl flex items-center justify-center font-bold text-lg">✓</div>
+                                        <h3 className="font-bold text-slate-900 text-lg">Zuhören</h3>
+                                        <p className="text-slate-600 text-sm leading-relaxed">Hör genau zu und gib der Person das Gefühl, nicht allein zu sein.</p>
+                                    </div>
+                                    <div className="bg-slate-50 p-6 rounded-2xl border border-slate-200 space-y-3">
+                                        <div className="w-10 h-10 bg-orange-100 text-orange-600 rounded-xl flex items-center justify-center font-bold text-lg">✓</div>
+                                        <h3 className="font-bold text-slate-900 text-lg">Nicht mitmachen</h3>
+                                        <p className="text-slate-600 text-sm leading-relaxed">Lache nicht mit und teile verletzende Inhalte unter keinen Umständen.</p>
+                                    </div>
+                                    <div className="bg-slate-50 p-6 rounded-2xl border border-slate-200 space-y-3">
+                                        <div className="w-10 h-10 bg-orange-100 text-orange-600 rounded-xl flex items-center justify-center font-bold text-lg">✓</div>
+                                        <h3 className="font-bold text-slate-900 text-lg">Nicht weiterleiten</h3>
+                                        <p className="text-slate-600 text-sm leading-relaxed">Stoppe die Verbreitung von Gerüchten, Fotos oder Screenshots.</p>
+                                    </div>
+                                    <div className="bg-slate-50 p-6 rounded-2xl border border-slate-200 space-y-3">
+                                        <div className="w-10 h-10 bg-orange-100 text-orange-600 rounded-xl flex items-center justify-center font-bold text-lg">✓</div>
+                                        <h3 className="font-bold text-slate-900 text-lg">Gemeinsam Hilfe holen</h3>
+                                        <p className="text-slate-600 text-sm leading-relaxed">Biete an, gemeinsam zu einer Lehrkraft oder Schulsozialarbeit zu gehen.</p>
+                                    </div>
+                                    <div className="bg-slate-50 p-6 rounded-2xl border border-slate-200 space-y-3">
+                                        <div className="w-10 h-10 bg-orange-100 text-orange-600 rounded-xl flex items-center justify-center font-bold text-lg">✓</div>
+                                        <h3 className="font-bold text-slate-900 text-lg">Nicht allein lassen</h3>
+                                        <p className="text-slate-600 text-sm leading-relaxed">Zeige im Alltag Unterstützung und signalisiere Zusammenhalt.</p>
+                                    </div>
+                                </div>
+                                <div className="bg-gradient-to-r from-orange-500 to-amber-500 text-white p-6 rounded-2xl text-center font-bold text-lg shadow-md">
+                                    Schon eine Person, die nicht mitmacht, kann einen großen Unterschied machen!
+                                </div>
+                            </div>
+                        )}
+
+                        {activeCategory === 'witness' && (
+                            <div className="space-y-8">
+                                <div className="border-b border-slate-100 pb-6">
+                                    <span className="text-amber-600 font-bold text-sm tracking-wide uppercase">Beobachter-Rolle</span>
+                                    <h2 className="text-2xl font-bold text-slate-900 mt-1">Du hast Cybermobbing beobachtet:</h2>
+                                </div>
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                    <div className="bg-slate-50 p-6 rounded-2xl border border-slate-200 space-y-3">
+                                        <h3 className="font-bold text-slate-900 text-lg">Im Klassenchat (z.B. WhatsApp)</h3>
+                                        <p className="text-slate-600 text-sm leading-relaxed">Schreibe sachlich und klar in die Gruppe: „Das ist unfair und verletzt jemanden. Lasst das sein.“</p>
+                                    </div>
+                                    <div className="bg-slate-50 p-6 rounded-2xl border border-slate-200 space-y-3">
+                                        <h3 className="font-bold text-slate-900 text-lg">Auf Social Media (Instagram, TikTok)</h3>
+                                        <p className="text-slate-600 text-sm leading-relaxed">Melde den Beitrag oder den Account direkt bei der Plattform. Kommentiere nicht negativ.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        )}
+
+                        {activeCategory === 'author' && (
+                            <div className="space-y-8">
+                                <div className="border-b border-slate-100 pb-6">
+                                    <span className="text-emerald-600 font-bold text-sm tracking-wide uppercase">Reflexion & Verantwortung</span>
+                                    <h2 className="text-2xl font-bold text-slate-900 mt-1">Du hast selbst etwas Verletzendes geschrieben:</h2>
+                                </div>
+                                <p className="text-slate-600 text-sm">Fehler passieren. Das Wichtigste ist jetzt, Verantwortung zu übernehmen und die Situation zu kitten.</p>
+                                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                                    <div className="bg-slate-50 p-6 rounded-2xl border border-slate-200 space-y-3">
+                                        <div className="w-10 h-10 bg-emerald-100 text-emerald-600 rounded-xl flex items-center justify-center font-bold text-lg">1</div>
+                                        <h3 className="font-bold text-slate-900 text-lg">Inhalte löschen</h3>
+                                        <p className="text-slate-600 text-sm leading-relaxed">Lösche den verletzenden Beitrag oder die Nachricht sofort, soweit möglich.</p>
+                                    </div>
+                                    <div className="bg-slate-50 p-6 rounded-2xl border border-slate-200 space-y-3">
+                                        <div className="w-10 h-10 bg-emerald-100 text-emerald-600 rounded-xl flex items-center justify-center font-bold text-lg">2</div>
+                                        <h3 className="font-bold text-slate-900 text-lg">Ehrlich entschuldigen</h3>
+                                        <p className="text-slate-600 text-sm leading-relaxed">Entschuldige dich bei der betroffenen Person – am besten direkt und ehrlich.</p>
+                                    </div>
+                                    <div className="bg-slate-50 p-6 rounded-2xl border border-slate-200 space-y-3">
+                                        <div className="w-10 h-10 bg-emerald-100 text-emerald-600 rounded-xl flex items-center justify-center font-bold text-lg">3</div>
+                                        <h3 className="font-bold text-slate-900 text-lg">Daraus lernen</h3>
+                                        <p className="text-slate-600 text-sm leading-relaxed">Reflektiere, warum du so reagiert hast und vermeide es in Zukunft.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        )}
+                    </div>
+                </div>
+            );
+        }
+
+        function ScenariosSection() {
+            const scenarios = [
+                {
+                    id: 1,
+                    title: "Situation 1: Das peinliche Foto",
+                    text: "In eurem Klassenchat wird ein peinliches Bild einer Mitschülerin gepostet.",
+                    options: [
+                        { label: "A: 😂 Ich lache mit.", feedback: "Mitlachen signalisiert den Mobbern Rückhalt und verstärkt das Schamgefühl." },
+                        { label: "B: Ich leite das Bild weiter.", feedback: "Das Weiterleiten verbreitet den Schaden noch weiter und macht dich zum Mittäter." },
+                        { label: "C: Ich schreibe, dass das nicht okay ist und leite es nicht weiter.", feedback: "Sehr gut! Das zeigt Zivilcourage und bricht den Gruppendruck sofort." },
+                        { label: "D: Ich ignoriere es komplett.", feedback: "Ignorieren ist besser als mitmachen, hilft der betroffenen Person in dem Moment aber nicht." }
+                    ]
+                },
+                {
+                    id: 2,
+                    title: "Situation 2: Beleidigung auf Social Media",
+                    text: "Unter dem Post eines Mitschülers stehen fiese Kommentare über sein Aussehen.",
+                    options: [
+                        { label: "A: Ich like die fiesen Kommentare.", feedback: "Likes geben den Mobbern Bestätigung und verletzen den Betroffenen zutiefst." },
+                        { label: "B: Ich schreibe einen positiven Gegenkommentar und melde die Beleidigungen.", feedback: "Perfekt! Du stärkst den Betroffenen und meldest den Verstoß." },
+                        { label: "C: Ich mache einen Screenshot und schicke es in einen anderen Chat.", feedback: "Das verbreitet den Vorfall unnötig weiter, anstatt direkt zu helfen." }
+                    ]
+                },
+                {
+                    id: 3,
+                    title: "Situation 3: Ausgrenzung in Gruppen",
+                    text: "Ein Mitschüler wird absichtlich aus einer gemeinsamen Projektgruppe ausgeschlossen.",
+                    options: [
+                        { label: "A: Ist halt so, betrifft mich ja nicht.", feedback: "Wegschauen bestärkt die Ausgrenzung." },
+                        { label: "B: Ich frage den Mitschüler, ob er mit uns in einer Gruppe arbeiten möchte.", feedback: "Großartig! So nimmst du der Ausgrenzung den Wind aus den Segeln." }
+                    ]
+                },
+                {
+                    id: 4,
+                    title: "Situation 4: Online-Gerücht",
+                    text: "Über eine Schülerin wird in einer Story ein übles Gerücht verbreitet, das nicht stimmt.",
+                    options: [
+                        { label: "A: Ich frage sie privat, was dran ist, und halte mich sonst raus.", feedback: "Ein guter Schritt, um Gerüchte nicht anzuheizen." },
+                        { label: "B: Ich frage in der Runde nach Details.", feedback: "Das facht das Gerücht nur weiter an und verbreitet falsche Informationen." }
+                    ]
+                },
+                {
+                    id: 5,
+                    title: "Situation 5: Bitte um Löschung",
+                    text: "Jemand bittet im Chat darum, ein verletzendes Video zu löschen, aber andere lachen nur darüber.",
+                    options: [
+                        { label: "A: Ich lache mit den anderen.", feedback: "Das verstärkt den Druck auf die bittende Person massiv." },
+                        { label: "B: Ich unterstütze die Person und fordere ebenfalls auf, das Video zu löschen.", feedback: "Vorbildlich! Gemeinsam mit anderen steht man solchen Situationen viel stärker gegenüber." }
+                    ]
+                }
+            ];
+
+            const [selectedAnswers, setSelectedAnswers] = useState({});
+
+            const handleSelect = (scenarioId, optionIndex) => {
+                setSelectedAnswers(prev => ({ ...prev, [scenarioId]: optionIndex }));
+            };
+
+            return (
+                <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-10">
+                    <div className="text-center space-y-4">
+                        <h1 className="text-3xl sm:text-4xl font-extrabold text-slate-900">Was würdest du tun?</h1>
+                        <p className="text-slate-600 text-base sm:text-lg">
+                            Teste verschiedene realistische Schulsituationen und erfahre, wie sich Reaktionen auswirken.
+                        </p>
+                    </div>
+
+                    <div className="space-y-8">
+                        {scenarios.map((sc) => {
+                            const chosen = selectedAnswers[sc.id];
+                            return (
+                                <div key={sc.id} className="bg-white rounded-2xl p-6 sm:p-8 shadow-md border border-slate-200 space-y-4">
+                                    <h3 className="text-xl font-bold text-slate-900">{sc.title}</h3>
+                                    <p className="text-slate-700 font-medium bg-slate-50 p-4 rounded-xl border border-slate-100">{sc.text}</p>
+                                    
+                                    <div className="space-y-2 pt-2">
+                                        {sc.options.map((opt, idx) => {
+                                            const isSelected = chosen === idx;
+                                            return (
+                                                <button
+                                                    key={idx}
+                                                    onClick={() => handleSelect(sc.id, idx)}
+                                                    className={`w-full text-left p-4 rounded-xl text-sm font-medium transition-all border ${
+                                                        isSelected ? 'bg-teal-50 border-teal-400 text-slate-900 font-semibold shadow-sm' : 'bg-white border-slate-200 text-slate-700 hover:bg-slate-50'
+                                                    }`}
+                                                >
+                                                    {opt.label}
+                                                </button>
+                                            );
+                                        })}
+                                    </div>
+
+                                    {chosen !== undefined && (
+                                        <div className="mt-4 p-4 rounded-xl bg-teal-500/10 border border-teal-400/30 text-slate-800 text-sm">
+                                            <span className="font-bold text-teal-800 block mb-1">Warum diese Reaktion wirkt:</span>
+                                            {sc.options[chosen].feedback}
+                                        </div>
+                                    )}
+                                </div>
+                            );
+                        })}
+                    </div>
+                </div>
+            );
+        }
+
+        function ChatSimulatorSection() {
+            const [selectedMsgId, setSelectedMsgId] = useState(null);
+            const [activeReaction, setActiveReaction] = useState(null);
+
+            const chatMessages = [
+                { id: 1, sender: "Lena", text: "Hat jemand das Bild von Max gesehen?", time: "14:10" },
+                { id: 2, sender: "Ben", text: "HAHA 😂", time: "14:11" },
+                { id: 3, sender: "Tom", text: "Schick mal.", time: "14:11" },
+                { id: 4, sender: "Sarah", text: "Find ich nicht okay.", time: "14:12" },
+            ];
+
+            const reactions = [
+                { type: "Mitmachen", label: "Mitmachen", desc: "Verstärkt den Druck und verletzt Max noch mehr." },
+                { type: "Schweigen", label: "Schweigen", desc: "Verhindert die eigene Beteiligung, hilft Max aber nicht." },
+                { type: "Stoppen", label: "Situation stoppen", desc: "Klar sagen: 'Schluss damit!' Bricht die Gruppendynamik." },
+                { type: "Unterstützen", label: "Betroffene Person unterstützen", desc: "Schreibe Max privat, dass du hinter ihm stehst." },
+                { type: "Hilfe", label: "Hilfe holen", desc: "Wende dich an eine Vertrauenslehrkraft oder Schulsozialarbeit." }
+            ];
+
+            return (
+                <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-10">
+                    <div className="text-center space-y-4">
+                        <h1 className="text-3xl sm:text-4xl font-extrabold text-slate-900">Fake-Klassenchat Simulator</h1>
+                        <p className="text-slate-600 text-base sm:text-lg">
+                            Klicke auf eine Nachricht im fiktiven Klassenchat, um Handlungsoptionen zu testen.
+                        </p>
+                    </div>
+
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
+                        <div className="bg-slate-900 rounded-2xl p-6 shadow-xl border border-slate-800 space-y-4">
+                            <div className="flex items-center justify-between border-b border-slate-800 pb-3">
+                                <span className="font-bold text-white text-sm">💬 Klassengruppe 7-10 (Fiktiv)</span>
+                                <span className="text-xs text-slate-400">4 Mitglieder</span>
+                            </div>
+
+                            <div className="space-y-3 py-2">
+                                {chatMessages.map((msg) => (
+                                    <div
+                                        key={msg.id}
+                                        onClick={() => {
+                                            setSelectedMsgId(msg.id);
+                                            setActiveReaction(null);
+                                        }}
+                                        className={`p-3 rounded-xl cursor-pointer transition-all border ${
+                                            selectedMsgId === msg.id ? 'bg-teal-500/20 border-teal-400 text-white' : 'bg-slate-800/80 border-slate-700/60 text-slate-200 hover:bg-slate-800'
+                                        }`}
+                                    >
+                                        <div className="flex justify-between text-xs text-slate-400 mb-1">
+                                            <span className="font-semibold text-teal-300">{msg.sender}</span>
+                                            <span>{msg.time}</span>
+                                        </div>
+                                        <p className="text-sm font-medium">{msg.text}</p>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+
+                        <div className="bg-white rounded-2xl p-6 sm:p-8 shadow-md border border-slate-200 space-y-6">
+                            <h3 className="text-xl font-bold text-slate-900">Auswirkungen analysieren</h3>
+                            {selectedMsgId === null ? (
+                                <div className="text-center py-12 text-slate-400 space-y-2">
+                                    <p className="text-sm">Wähle links eine Nachricht aus, um Reaktionen zu testen.</p>
+                                </div>
+                            ) : (
+                                <div className="space-y-4">
+                                    <div className="bg-slate-50 p-4 rounded-xl border border-slate-200">
+                                        <span className="text-xs font-bold text-slate-500 uppercase">Ausgewählte Nachricht</span>
+                                        <p className="text-sm font-semibold text-slate-900 mt-1">
+                                            "{chatMessages.find(m => m.id === selectedMsgId)?.sender}: {chatMessages.find(m => m.id === selectedMsgId)?.text}"
+                                        </p>
+                                    </div>
+
+                                    <div className="space-y-2">
+                                        <label className="text-sm font-bold text-slate-700 block">Wie reagierst du?</label>
+                                        {reactions.map((react, i) => (
+                                            <button
+                                                key={i}
+                                                onClick={() => setActiveReaction(react)}
+                                                className={`w-full text-left p-3 rounded-xl text-xs font-semibold transition-all border ${
+                                                    activeReaction?.type === react.type ? 'bg-slate-900 text-white border-slate-900' : 'bg-white text-slate-700 border-slate-200 hover:bg-slate-50'
+                                                }`}
+                                            >
+                                                {react.label}
+                                            </button>
+                                        ))}
+                                    </div>
+
+                                    {activeReaction && (
+                                        <div className="p-4 rounded-xl bg-teal-50 border border-teal-200 text-slate-800 text-sm">
+                                            <span className="font-bold text-teal-900 block mb-1">Mögliche Auswirkungen:</span>
+                                            {activeReaction.desc}
+                                        </div>
+                                    )}
+                                </div>
+                            )}
+                        </div>
+                    </div>
+                </div>
+            );
+        }
+
+        function CybermobbingCheckSection() {
+            const questions = [
+                "Passiert das wiederholt und über längere Zeit?",
+                "Wird eine Person absichtlich verletzt, verspottet oder bloßgestellt?",
+                "Werden Bilder, Videos oder Nachrichten ohne Zustimmung im Netz verbreitet?",
+                "Wird jemand gezielt aus Chats oder digitalen Gruppen ausgeschlossen?",
+                "Findet das Ganze online oder über digitale Medien statt?",
+                "Fühlt sich die betroffene Person hilflos und leidet unter der Situation?",
+                "Führten frühere Bitten, damit aufzuhören, zu keinem Erfolg?"
+            ];
+
+            const [answers, setAnswers] = useState({});
+
+            const handleAnswer = (index, value) => {
+                setAnswers(prev => ({ ...prev, [index]: value }));
+            };
+
+            const answeredCount = Object.keys(answers).length;
+            const isComplete = answeredCount === questions.length;
+            const yesCount = Object.values(answers).filter(v => v === 'yes').length;
+
+            return (
+                <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-10">
+                    <div className="text-center space-y-4">
+                        <h1 className="text-3xl sm:text-4xl font-extrabold text-slate-900">Cybermobbing-Check</h1>
+                        <p className="text-slate-600 text-base sm:text-lg">
+                            Beantworte 7 kurze Fragen zur Einschätzung.
+                        </p>
+                    </div>
+
+                    <div className="space-y-6">
+                        {questions.map((q, idx) => (
+                            <div key={idx} className="bg-white rounded-2xl p-6 shadow-md border border-slate-200 space-y-4">
+                                <span className="text-xs font-bold text-teal-600 uppercase">Frage {idx + 1} von 7</span>
+                                <h3 className="text-lg font-bold text-slate-900">{q}</h3>
+                                <div className="flex gap-4">
+                                    <button
+                                        onClick={() => handleAnswer(idx, 'yes')}
+                                        className={`flex-1 py-3 px-4 rounded-xl font-semibold text-sm transition-all border ${
+                                            answers[idx] === 'yes' ? 'bg-red-500 text-white border-red-500 shadow-md' : 'bg-white text-slate-700 border-slate-200 hover:bg-slate-50'
+                                        }`}
+                                    >
+                                        Ja
+                                    </button>
+                                    <button
+                                        onClick={() => handleAnswer(idx, 'no')}
+                                        className={`flex-1 py-3 px-4 rounded-xl font-semibold text-sm transition-all border ${
+                                            answers[idx] === 'no' ? 'bg-slate-900 text-white border-slate-900 shadow-md' : 'bg-white text-slate-700 border-slate-200 hover:bg-slate-50'
+                                        }`}
+                                    >
+                                        Nein
+                                    </button>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+
+                    {isComplete && (
+                        <div className="bg-slate-900 text-white p-8 rounded-3xl shadow-xl space-y-4">
+                            <h3 className="text-2xl font-bold text-teal-400">Ergebnis des Checks</h3>
+                            <p className="text-slate-200 text-base leading-relaxed">
+                                {yesCount >= 4 ? "Das könnte eine Situation sein, bei der du dir unbedingt Unterstützung holen solltest." : "Auch wenn nicht alle Punkte zutreffen: Wenn dich eine Situation belastet, sprich mit einer Vertrauensperson.(z.B. Lehrer, Familie, Nummer gegen Kummer(116111))"}
+                            </p>
+                        </div>
+                    )}
+                </div>
+            );
+        }
+
+        function FirstStepSection({ setActiveTab }) {
+            const [activeStep, setActiveStep] = useState(null);
+
+            return (
+                <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-10">
+                    <div className="text-center space-y-4">
+                        <h1 className="text-3xl sm:text-4xl font-extrabold text-slate-900">Du weißt gerade nicht weiter?</h1>
+                        <p className="text-slate-600 text-base sm:text-lg">Wähle einen Button für sofortige Erste Hilfe.</p>
+                    </div>
+
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        <button
+                            onClick={() => setActiveStep('talk')}
+                            className={`p-6 rounded-2xl text-left border transition-all space-y-3 ${activeStep === 'talk' ? 'bg-teal-50 border-teal-400 shadow-md' : 'bg-white border-slate-200'}`}
+                        >
+                            <div className="w-10 h-10 rounded-xl bg-teal-100 text-teal-800 flex items-center justify-center font-bold">🗣</div>
+                            <h3 className="font-bold text-slate-900 text-lg">Mit jemandem sprechen</h3>
+                        </button>
+                        <button
+                            onClick={() => setActiveStep('evidence')}
+                            className={`p-6 rounded-2xl text-left border transition-all space-y-3 ${activeStep === 'evidence' ? 'bg-teal-50 border-teal-400 shadow-md' : 'bg-white border-slate-200'}`}
+                        >
+                            <div className="w-10 h-10 rounded-xl bg-blue-100 text-blue-800 flex items-center justify-center font-bold">📸</div>
+                            <h3 className="font-bold text-slate-900 text-lg">Beweise sichern</h3>
+                        </button>
+                        <button
+                            onClick={() => setActiveStep('help')}
+                            className={`p-6 rounded-2xl text-left border transition-all space-y-3 ${activeStep === 'help' ? 'bg-teal-50 border-teal-400 shadow-md' : 'bg-white border-slate-200'}`}
+                        >
+                            <div className="w-10 h-10 rounded-xl bg-purple-100 text-purple-800 flex items-center justify-center font-bold">🤝</div>
+                            <h3 className="font-bold text-slate-900 text-lg">Jemanden um Hilfe bitten</h3>
+                        </button>
+                    </div>
+
+                    {activeStep === 'talk' && (
+                        <div className="bg-white p-8 rounded-2xl shadow-md border border-slate-200 space-y-4">
+                            <h3 className="text-xl font-bold text-slate-900">Mit jemandem sprechen</h3>
+                            <p className="text-slate-700 text-sm">Du musst das nicht mit dir ausmachen. Sprich mit einer Vertrauensperson. (z.B. Lehrer, Familie, Nummer gegen Kummer(116111))</p>
+                        </div>
+                    )}
+                    {activeStep === 'evidence' && (
+                        <div className="bg-white p-8 rounded-2xl shadow-md border border-slate-200 space-y-4">
+                            <h3 className="text-xl font-bold text-slate-900">Beweise sichern</h3>
+                            <p className="text-slate-700 text-sm">Mache Screenshots mit Datum und Uhrzeit. Lösche nichts voreilig.</p>
+                        </div>
+                    )}
+                    {activeStep === 'help' && (
+                        <div className="bg-white p-8 rounded-2xl shadow-md border border-slate-200 space-y-4">
+                            <h3 className="text-xl font-bold text-slate-900">Jemanden um Hilfe bitten</h3>
+                            <p className="text-slate-700 text-sm">Nutze unsere Hilfeseite oder die Nummer gegen Kummer (116111).</p>
+                        </div>
+                    )}
+                </div>
+            );
+        }
+
+        function HelpSection() {
+            return (
+                <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-12">
+                    <div className="text-center max-w-3xl mx-auto space-y-4">
+                        <h1 className="text-3xl sm:text-4xl font-extrabold text-slate-900">Hilfe & Kontakte</h1>
+                        <p className="text-slate-600 text-base sm:text-lg">Seriöse Ansprechpartner in der Schule, zu Hause und online.</p>
+                    </div>
+
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                        <div className="bg-white rounded-2xl p-6 shadow-md border border-slate-200 space-y-4">
+                            <h3 className="text-xl font-bold text-slate-900">Schule</h3>
+                            <ul className="space-y-3 text-sm text-slate-700">
+                                <li className="p-3 bg-slate-50 rounded-xl border"><strong>Vertrauenslehrkraft:</strong><br /><span className="text-slate-500 italic">Nina Friedrich, Kerstin Hitzing, Yannik Rissiek, Mirjam Wedemeyer, Daniel Wilke, Christina Wiescholek</span></li>
+                                <li className="p-3 bg-slate-50 rounded-xl border"><strong>Schulsozialarbeit:</strong><br /><span className="text-slate-500 italic">Aline Müller</span></li>
+                            </ul>
+                        </div>
+                        <div className="bg-white rounded-2xl p-6 shadow-md border border-slate-200 space-y-4">
+                            <h3 className="text-xl font-bold text-slate-900">Zuhause</h3>
+                            <ul className="space-y-3 text-sm text-slate-700">
+                                <li className="p-3 bg-slate-50 rounded-xl border"><strong>Eltern & Familie:</strong><br />Erste Vertrauensbasis.</li>
+                            </ul>
+                        </div>
+                        <div className="bg-white rounded-2xl p-6 shadow-md border border-slate-200 space-y-4">
+                            <h3 className="text-xl font-bold text-slate-900">Online & Hotlines</h3>
+                            <ul className="space-y-3 text-sm text-slate-700">
+                                <li className="p-3 bg-slate-50 rounded-xl border"><strong>Nummer gegen Kummer:</strong><br />Tel. 116111 (kostenlos & anonym)</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            );
+        }
+
+        function ProjectSection() {
+            return (
+                <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-12">
+                    <div className="text-center space-y-4">
+                        <h1 className="text-3xl sm:text-4xl font-extrabold text-slate-900">Über unser Projekt</h1>
+                        <p className="text-xl font-semibold text-teal-600">Wir wollen nicht nur über Cybermobbing sprechen. Wir wollen etwas verändern.</p>
+                    </div>
+                    <div className="bg-white rounded-3xl p-8 sm:p-10 shadow-xl border border-slate-200 space-y-8">
+                        <p className="text-slate-700 leading-relaxed">
+                            Diese Website wurde im Rahmen des Projekts „Stark gegen Cybermobbing“ entwickelt, um Schülerinnen und Schülern unkomplizierte Hilfe und Handlungsschritte an die Hand zu geben.
+                        </p>
+                    </div>
+                </div>
+            );
+        }
+
+        function QrCodeSection() {
+            return (
+                <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-10">
+                    <div className="text-center space-y-4">
+                        <h1 className="text-3xl sm:text-4xl font-extrabold text-slate-900">Scannen. Informieren. Helfen.</h1>
+                        <p className="text-slate-600">Unser QR-Code für Plakate und Aushänge in der Schule.</p>
+                    </div>
+                    <div className="bg-white rounded-3xl p-8 sm:p-12 shadow-xl border border-slate-200 text-center space-y-6 max-w-md mx-auto">
+                        <div className="w-48 h-48 mx-auto bg-slate-900 rounded-2xl flex items-center justify-center text-teal-400 font-bold text-xl">
+                            [QR-CODE]
+                        </div>
+                        <p className="text-sm text-slate-600">Diesen QR-Code verwenden wir in der Schule auf Plakaten.</p>
+                    </div>
+                </div>
+            );
+        }
+
+        function ChallengeSection() {
+            const [completedDays, setCompletedDays] = useState(() => {
+                try {
+                    const saved = localStorage.getItem('respekt_challenge');
+                    return saved ? JSON.parse(saved) : {};
+                } catch {
+                    return {};
+                }
+            });
+
+            const challengeDays = [
+                { day: 1, text: "Sag jemandem ehrlich Danke." },
+                { day: 2, text: "Schließe niemanden absichtlich aus." },
+                { day: 3, text: "Schreibe einen positiven Kommentar." },
+                { day: 4, text: "Unterstütze jemanden, der alleine ist." },
+                { day: 5, text: "Greife ein, wenn jemand unfair behandelt wird." },
+                { day: 6, text: "Denke nach, bevor du etwas weiterleitest." },
+                { day: 7, text: "Tu heute etwas Nettes für jemanden." },
+            ];
+
+            const toggleDay = (dayNum) => {
+                const updated = { ...completedDays, [dayNum]: !completedDays[dayNum] };
+                setCompletedDays(updated);
+                try {
+                    localStorage.setItem('respekt_challenge', JSON.stringify(updated));
+                } catch (e) {}
+            };
+
+            return (
+                <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-10">
+                    <div className="text-center space-y-4">
+                        <h1 className="text-3xl sm:text-4xl font-extrabold text-slate-900">Kleine Respekt-Challenge</h1>
+                        <p className="text-slate-600">7 Tage – 7 Aktionen für mehr Respekt. Klicke auf die Tage, um sie zu markieren!</p>
+                    </div>
+
+                    <div className="space-y-4">
+                        {challengeDays.map((item) => {
+                            const isDone = !!completedDays[item.day];
+                            return (
+                                <div
+                                    key={item.day}
+                                    onClick={() => toggleDay(item.day)}
+                                    className={`p-6 rounded-2xl border transition-all cursor-pointer flex items-center justify-between ${
+                                        isDone ? 'bg-teal-50 border-teal-300 text-slate-900' : 'bg-white border-slate-200 text-slate-700'
+                                    }`}
+                                >
+                                    <div className="flex items-center space-x-4">
+                                        <div className={`w-10 h-10 rounded-xl flex items-center justify-center font-bold text-sm ${isDone ? 'bg-teal-500 text-slate-950' : 'bg-slate-100 text-slate-700'}`}>
+                                            Tag {item.day}
+                                        </div>
+                                        <span className={`font-semibold text-base ${isDone ? 'line-through text-slate-500' : 'text-slate-900'}`}>
+                                            {item.text}
+                                        </span>
+                                    </div>
+                                </div>
+                            );
+                        })}
+                    </div>
+                </div>
+            );
+        }
+
+        function Footer({ setActiveTab }) {
+            return (
+                <footer className="bg-slate-900 text-white border-t border-slate-800 py-12 px-4 sm:px-6 lg:px-8 mt-20">
+                    <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-8 pb-8 border-b border-slate-800">
+                        <div className="space-y-3 md:col-span-2">
+                            <div className="flex items-center space-x-3">
+                                <span className="text-xl font-black">RESPEKT</span>
+                            </div>
+                            <p className="text-slate-400 text-sm max-w-md">Dein digitaler Erste-Hilfe-Kasten gegen Cybermobbing.</p>
+                        </div>
+                    </div>
+                    <div className="max-w-7xl mx-auto pt-8 flex flex-col sm:flex-row items-center justify-between text-xs text-slate-400">
+                        <p>© 2026 Projekt RESPEKT.</p>
+                        <p className="mt-2 sm:mt-0 font-semibold text-teal-300">NICHT MITMACHEN. NICHT WEGSCHAUEN. RESPEKT ZEIGEN.</p>
+                    </div>
+                </footer>
+            );
+        }
+
+        ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+    </script>
+</body>
+</html>
