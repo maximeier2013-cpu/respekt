@@ -1533,16 +1533,13 @@ function QrCodeSection() {
     const websiteUrl =
         "https://respekt-gemeinsam-gegen-cybermobbing.netlify.app/";
 
-
     const qrCodeUrl =
         "https://api.qrserver.com/v1/create-qr-code/?size=500x500&data="
         + encodeURIComponent(websiteUrl);
 
-
     return (
 
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-10">
-
 
             <div className="text-center space-y-4">
 
@@ -1559,24 +1556,19 @@ function QrCodeSection() {
 
                 </div>
 
-
                 <h1 className="text-3xl sm:text-4xl font-extrabold text-slate-900">
                     Scannen. Informieren. Helfen.
                 </h1>
 
-
                 <p className="text-slate-600 text-base sm:text-lg max-w-2xl mx-auto">
-
                     Scanne den QR-Code mit deinem Smartphone und öffne direkt unsere
                     Website gegen Cybermobbing.
-
                 </p>
 
             </div>
 
 
             <div className="bg-white rounded-3xl p-8 sm:p-12 shadow-xl border border-slate-200 text-center space-y-8 max-w-lg mx-auto">
-
 
                 <div className="bg-slate-50 rounded-2xl p-6 border border-slate-200">
 
@@ -1595,43 +1587,17 @@ function QrCodeSection() {
                         RESPEKT – Digitaler Erste-Hilfe-Kasten
                     </h2>
 
-
                     <p className="text-sm text-slate-500 break-all">
                         {websiteUrl}
                     </p>
 
                 </div>
 
-
-                <a
-                    href={websiteUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center justify-center space-x-2 bg-teal-500 hover:bg-teal-400 text-slate-950 font-bold px-6 py-3 rounded-xl transition-all shadow-md"
-                >
-
-                    <Icon
-                        name="external-link"
-                        className="w-5 h-5"
-                    />
-
-                    <span>
-                        Website öffnen
-                    </span>
-
-                </a>
-
-
-                <p className="text-xs text-slate-500">
-                    Diesen QR-Code kannst du für Plakate, Flyer und Aushänge verwenden.
-                </p>
-
             </div>
 
         </div>
     );
 }
-
 
 /* =========================
    CHALLENGE
