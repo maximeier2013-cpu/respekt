@@ -1360,77 +1360,195 @@ function ScenariosSection() {
 function ChatSimulatorSection() {
 
     const messages = [
-
-        {
-            sender: "Lena",
-            text: "Hat jemand das Bild von Max gesehen?",
-            time: "14:10"
-        },
-
         {
             sender: "Ben",
-            text: "HAHA 😂",
-            time: "14:11"
-        },
-
-        {
-            sender: "Tom",
-            text: "Schick mal.",
-            time: "14:11"
+            text: "Hat jemand das peinliche Bild von Leon?",
+            time: "14:10",
+            reactions: [
+                {
+                    text: "Ich schreibe: „Lasst das bitte. Das ist nicht okay.“",
+                    type: "good",
+                    feedback: "Gut reagiert! Du setzt eine klare Grenze und machst deutlich, dass du bei der Situation nicht mitmachst."
+                },
+                {
+                    text: "Ich schreibe „HAHA“ dazu.",
+                    type: "bad",
+                    feedback: "Damit verstärkst du die Situation. Auch wenn es als Spaß gemeint ist, kann das für die betroffene Person verletzend sein."
+                },
+                {
+                    text: "Ich leite das Bild weiter.",
+                    type: "bad",
+                    feedback: "Das solltest du nicht tun. Durch Weiterleiten verbreitet sich das Bild noch weiter."
+                },
+                {
+                    text: "Ich sichere die Nachricht und hole Hilfe.",
+                    type: "good",
+                    feedback: "Das ist sinnvoll. Sichere Beweise und wende dich an eine Vertrauensperson, wenn die Situation weitergeht."
+                }
+            ]
         },
 
         {
             sender: "Sarah",
-            text: "Find ich nicht okay.",
-            time: "14:12"
+            text: "Warum ist Mia eigentlich noch in unserer Gruppe?",
+            time: "14:16",
+            reactions: [
+                {
+                    text: "Ich schreibe: „Lasst sie einfach drin.“",
+                    type: "good",
+                    feedback: "Gut! Du stellst dich gegen die Ausgrenzung und machst deutlich, dass Mia dazugehört."
+                },
+                {
+                    text: "Ich stimme zu und mache mit.",
+                    type: "bad",
+                    feedback: "Damit unterstützt du die Ausgrenzung. Besser ist es, niemanden absichtlich aus einer Gruppe auszuschließen."
+                },
+                {
+                    text: "Ich schreibe Mia privat und frage, ob alles okay ist.",
+                    type: "good",
+                    feedback: "Das kann sehr hilfreich sein. Du zeigst Mia, dass sie nicht allein ist."
+                }
+            ]
+        },
+
+        {
+            sender: "Tom",
+            text: "Guckt mal, was jemand über Jonas geschrieben hat 😂",
+            time: "14:23",
+            reactions: [
+                {
+                    text: "Ich frage, ob wir den Beitrag melden können.",
+                    type: "good",
+                    feedback: "Gute Reaktion! Beleidigende Inhalte können gemeldet werden. Außerdem solltest du sie nicht weiterverbreiten."
+                },
+                {
+                    text: "Ich schicke den Beitrag an weitere Leute.",
+                    type: "bad",
+                    feedback: "Dadurch verbreitet sich der verletzende Inhalt weiter. Teile ihn nicht unnötig."
+                },
+                {
+                    text: "Ich schreibe Jonas privat und frage, ob er Unterstützung braucht.",
+                    type: "good",
+                    feedback: "Sehr gut. Du unterstützt die betroffene Person direkt und gibst ihr die Möglichkeit, darüber zu sprechen."
+                }
+            ]
+        },
+
+        {
+            sender: "Lena",
+            text: "Alle sollen wissen, was Max angeblich gemacht hat.",
+            time: "14:31",
+            reactions: [
+                {
+                    text: "Ich frage zuerst, ob die Information überhaupt stimmt.",
+                    type: "good",
+                    feedback: "Sinnvoll. Bevor du etwas weiterverbreitest, solltest du nicht einfach ungeprüfte Behauptungen übernehmen."
+                },
+                {
+                    text: "Ich schicke die Nachricht an meine Freunde.",
+                    type: "bad",
+                    feedback: "Das kann ein Gerücht weiterverbreiten und Max zusätzlich belasten."
+                },
+                {
+                    text: "Ich schreibe: „Lasst uns keine Gerüchte verbreiten.“",
+                    type: "good",
+                    feedback: "Gut reagiert! Du stoppst die weitere Verbreitung und setzt eine klare Grenze."
+                }
+            ]
+        },
+
+        {
+            sender: "Ben",
+            text: "Warum antwortet eigentlich niemand auf Paul?",
+            time: "14:38",
+            reactions: [
+                {
+                    text: "Ich antworte Paul und beziehe ihn ins Gespräch ein.",
+                    type: "good",
+                    feedback: "Das ist eine gute Möglichkeit. Du zeigst Paul, dass er nicht ignoriert wird."
+                },
+                {
+                    text: "Ich ignoriere ihn ebenfalls.",
+                    type: "bad",
+                    feedback: "Dadurch kann sich Paul noch stärker ausgeschlossen fühlen."
+                },
+                {
+                    text: "Ich frage ihn privat, ob alles okay ist.",
+                    type: "good",
+                    feedback: "Gut! Eine kurze persönliche Nachricht kann zeigen, dass jemand nicht allein ist."
+                }
+            ]
         }
-
     ];
-
-
-    const reactions = [
-
-        "Mitmachen",
-
-        "Schweigen",
-
-        "Situation stoppen",
-
-        "Betroffene Person unterstützen",
-
-        "Hilfe holen"
-
-    ];
-
 
     const [selectedMessage, setSelectedMessage] = useState(null);
-    const [reaction, setReaction] = useState(null);
+    const [selectedReaction, setSelectedReaction] = useState(null);
 
+    const currentMessage =
+        selectedMessage !== null
+            ? messages[selectedMessage]
+            : null;
+
+    const currentReaction =
+        selectedReaction !== null && currentMessage
+            ? currentMessage.reactions[selectedReaction]
+            : null;
 
     return (
 
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-10">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-10">
 
             <div className="text-center space-y-4">
 
+                <div className="inline-flex items-center space-x-2 bg-blue-100 text-blue-700 px-4 py-2 rounded-full text-sm font-bold">
+
+                    <Icon
+                        name="message-circle"
+                        className="w-5 h-5"
+                    />
+
+                    <span>
+                        Interaktiver Klassenchat
+                    </span>
+
+                </div>
+
                 <h1 className="text-3xl sm:text-4xl font-extrabold">
-                    Fake-Klassenchat Simulator
+                    Was würdest du tun?
                 </h1>
 
-                <p className="text-slate-600">
-                    Klicke auf eine Nachricht und teste verschiedene Reaktionen.
+                <p className="text-slate-600 max-w-2xl mx-auto">
+                    Klicke auf verschiedene Nachrichten im Klassenchat und
+                    entscheide, wie du reagieren würdest.
                 </p>
 
             </div>
 
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
 
 
-                <div className="bg-slate-900 rounded-2xl p-6 shadow-xl">
+                {/* KLASSENCHAT */}
 
-                    <div className="text-white font-bold border-b border-slate-700 pb-3 mb-4">
-                        💬 Klassengruppe
+                <div className="bg-slate-900 rounded-3xl p-6 shadow-xl">
+
+                    <div className="flex items-center justify-between border-b border-slate-700 pb-4 mb-5">
+
+                        <div className="text-white font-bold flex items-center gap-2">
+
+                            <Icon
+                                name="users"
+                                className="w-5 h-5 text-teal-400"
+                            />
+
+                            Klassengruppe
+
+                        </div>
+
+                        <span className="text-xs text-slate-400">
+                            {messages.length} Situationen
+                        </span>
+
                     </div>
 
 
@@ -1442,12 +1560,12 @@ function ChatSimulatorSection() {
                                 key={index}
                                 onClick={() => {
                                     setSelectedMessage(index);
-                                    setReaction(null);
+                                    setSelectedReaction(null);
                                 }}
-                                className={`w-full text-left p-4 rounded-xl ${
+                                className={`w-full text-left p-4 rounded-xl transition-all ${
                                     selectedMessage === index
                                         ? "bg-teal-500/20 border border-teal-400"
-                                        : "bg-slate-800"
+                                        : "bg-slate-800 border border-slate-800 hover:border-slate-600"
                                 }`}
                             >
 
@@ -1476,51 +1594,140 @@ function ChatSimulatorSection() {
                 </div>
 
 
-                <div className="bg-white rounded-2xl p-6 shadow-md border border-slate-200">
+                {/* REAKTION */}
 
-                    <h3 className="text-xl font-bold mb-5">
-                        Wie reagierst du?
-                    </h3>
+                <div className="bg-white rounded-3xl p-6 sm:p-8 shadow-md border border-slate-200">
+
+                    <h2 className="text-xl font-bold text-slate-900 mb-2">
+                        Deine Reaktion
+                    </h2>
+
+                    <p className="text-sm text-slate-500 mb-6">
+                        Wähle zuerst eine Nachricht aus.
+                    </p>
 
 
-                    {selectedMessage === null ? (
+                    {currentMessage === null ? (
 
-                        <p className="text-slate-500 text-sm">
-                            Wähle links eine Nachricht aus.
-                        </p>
+                        <div className="bg-slate-50 rounded-2xl p-6 text-center">
+
+                            <Icon
+                                name="mouse-pointer-click"
+                                className="w-10 h-10 mx-auto text-slate-400 mb-3"
+                            />
+
+                            <p className="text-sm text-slate-500">
+                                Klicke links auf eine Nachricht,
+                                um verschiedene Reaktionen zu testen.
+                            </p>
+
+                        </div>
 
                     ) : (
 
                         <div className="space-y-3">
 
-                            {reactions.map((item, index) => (
+                            {currentMessage.reactions.map((reaction, index) => {
 
-                                <button
-                                    key={index}
-                                    onClick={() => setReaction(item)}
-                                    className={`w-full text-left p-3 rounded-xl border text-sm font-semibold ${
-                                        reaction === item
-                                            ? "bg-slate-900 text-white"
-                                            : "border-slate-200 hover:bg-slate-50"
+                                const isSelected =
+                                    selectedReaction === index;
+
+                                return (
+
+                                    <button
+                                        key={index}
+                                        onClick={() => setSelectedReaction(index)}
+                                        className={`w-full text-left p-4 rounded-xl border-2 transition-all ${
+                                            isSelected
+                                                ? reaction.type === "good"
+                                                    ? "bg-green-50 border-green-400"
+                                                    : "bg-red-50 border-red-400"
+                                                : "border-slate-200 hover:border-teal-300 hover:bg-slate-50"
+                                        }`}
+                                    >
+
+                                        <div className="flex items-center justify-between gap-3">
+
+                                            <span className="text-sm font-medium text-slate-800">
+                                                {reaction.text}
+                                            </span>
+
+                                            {isSelected && (
+
+                                                <span
+                                                    className={
+                                                        reaction.type === "good"
+                                                            ? "text-green-600 text-xl font-bold"
+                                                            : "text-red-500 text-xl font-bold"
+                                                    }
+                                                >
+                                                    {reaction.type === "good"
+                                                        ? "✓"
+                                                        : "✕"}
+                                                </span>
+
+                                            )}
+
+                                        </div>
+
+                                    </button>
+
+                                );
+
+                            })}
+
+
+                            {currentReaction && (
+
+                                <div
+                                    className={`mt-5 rounded-2xl p-5 border ${
+                                        currentReaction.type === "good"
+                                            ? "bg-green-50 border-green-200"
+                                            : "bg-orange-50 border-orange-200"
                                     }`}
                                 >
-                                    {item}
-                                </button>
 
-                            ))}
+                                    <div className="flex items-start gap-3">
 
+                                        <span
+                                            className={`text-2xl font-bold ${
+                                                currentReaction.type === "good"
+                                                    ? "text-green-600"
+                                                    : "text-orange-500"
+                                            }`}
+                                        >
+                                            {currentReaction.type === "good"
+                                                ? "✓"
+                                                : "!"}
+                                        </span>
 
-                            {reaction && (
+                                        <div>
 
-                                <div className="mt-5 bg-teal-50 border border-teal-200 p-4 rounded-xl text-sm">
+                                            <h3
+                                                className={`font-bold mb-1 ${
+                                                    currentReaction.type === "good"
+                                                        ? "text-green-800"
+                                                        : "text-orange-800"
+                                                }`}
+                                            >
+                                                {currentReaction.type === "good"
+                                                    ? "Gute Reaktion"
+                                                    : "Überlege noch einmal"}
+                                            </h3>
 
-                                    <strong>
-                                        Mögliche Auswirkung:
-                                    </strong>
+                                            <p
+                                                className={`text-sm leading-relaxed ${
+                                                    currentReaction.type === "good"
+                                                        ? "text-green-800"
+                                                        : "text-orange-800"
+                                                }`}
+                                            >
+                                                {currentReaction.feedback}
+                                            </p>
 
-                                    <p className="mt-1">
-                                        Deine Reaktion kann beeinflussen, ob die Situation eskaliert oder gestoppt wird.
-                                    </p>
+                                        </div>
+
+                                    </div>
 
                                 </div>
 
@@ -1684,77 +1891,135 @@ function CybermobbingCheckSection() {
 
 function FirstStepSection() {
 
-    const [active, setActive] = useState(null);
-
-
-    const cards = [
-
+    const situations = [
         {
-            id: "talk",
+            id: "message",
             icon: "message-circle",
-            title: "Mit jemandem sprechen",
-            text: "Sprich mit einer Vertrauensperson."
+            title: "Du bekommst verletzende Nachrichten",
+            situation: "Jemand schreibt dir wiederholt beleidigende oder gemeine Nachrichten.",
+            answer: "Antworte nicht mit weiteren Beleidigungen. Sichere die Nachrichten und zeige sie einer erwachsenen Vertrauensperson.",
+            tip: "Du musst nicht alleine entscheiden, wie du damit umgehen sollst."
         },
 
         {
-            id: "evidence",
-            icon: "camera",
-            title: "Beweise sichern",
-            text: "Sichere Screenshots und Nachrichten."
+            id: "photo",
+            icon: "image",
+            title: "Ein Bild von dir wird verbreitet",
+            situation: "Ein Foto von dir wurde ohne deine Zustimmung in einem Chat geteilt.",
+            answer: "Bitte darum, das Bild nicht weiterzuverbreiten. Sichere einen Screenshot als Beweis und hole Unterstützung.",
+            tip: "Du kannst gemeinsam mit einer Vertrauensperson überlegen, welche weiteren Schritte sinnvoll sind."
         },
 
         {
-            id: "help",
-            icon: "hand-helping",
-            title: "Hilfe holen",
-            text: "Bitte eine erwachsene Vertrauensperson um Unterstützung."
+            id: "group",
+            icon: "users",
+            title: "Du wirst aus einer Gruppe ausgeschlossen",
+            situation: "Andere schließen dich absichtlich aus einem Klassenchat oder einer digitalen Gruppe aus.",
+            answer: "Sprich mit jemandem, dem du vertraust. Beschreibe konkret, was passiert ist und wie lange es schon so geht.",
+            tip: "Absichtliche Ausgrenzung kann belastend sein – du musst das nicht einfach hinnehmen."
+        },
+
+        {
+            id: "witness",
+            icon: "eye",
+            title: "Du beobachtest Cybermobbing",
+            situation: "Du siehst, dass jemand im Klassenchat beleidigt oder bloßgestellt wird.",
+            answer: "Mach nicht mit und teile die Inhalte nicht weiter. Wenn es sicher möglich ist, setze eine klare Grenze und hole Unterstützung.",
+            tip: "Auch als Zuschauer kannst du etwas bewirken, ohne dich selbst in Gefahr zu bringen."
+        },
+
+        {
+            id: "rumor",
+            icon: "message-square-warning",
+            title: "Über dich wird ein Gerücht verbreitet",
+            situation: "In einer Gruppe werden falsche Behauptungen über dich erzählt.",
+            answer: "Verbreite das Gerücht nicht weiter. Sprich mit einer Vertrauensperson und erkläre, was du gesehen oder mitbekommen hast.",
+            tip: "Du musst dich nicht vor der ganzen Gruppe rechtfertigen."
+        },
+
+        {
+            id: "mistake",
+            icon: "heart-handshake",
+            title: "Du hast selbst jemanden verletzt",
+            situation: "Du hast etwas Gemeines geschrieben und merkst danach, dass es die andere Person verletzt hat.",
+            answer: "Übernimm Verantwortung, lösche den Beitrag soweit möglich und entschuldige dich ehrlich. Überlege anschließend, wie du es beim nächsten Mal anders machen kannst.",
+            tip: "Ein Fehler bedeutet nicht, dass du nichts mehr ändern kannst."
         }
-
     ];
+
+
+    const [selected, setSelected] = useState(null);
+
+    const current =
+        selected !== null
+            ? situations[selected]
+            : null;
 
 
     return (
 
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-10">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-10">
 
             <div className="text-center space-y-4">
 
+                <div className="inline-flex items-center space-x-2 bg-teal-100 text-teal-800 px-4 py-2 rounded-full text-sm font-bold">
+
+                    <Icon
+                        name="hand-helping"
+                        className="w-5 h-5"
+                    />
+
+                    <span>
+                        Dein erster Schritt
+                    </span>
+
+                </div>
+
                 <h1 className="text-3xl sm:text-4xl font-extrabold">
-                    Du weißt gerade nicht weiter?
+                    Was ist gerade passiert?
                 </h1>
 
-                <p className="text-slate-600">
-                    Wähle einen Bereich für den ersten Schritt.
+                <p className="text-slate-600 max-w-2xl mx-auto">
+                    Wähle die Situation aus, die am ehesten zu dir passt.
+                    Danach bekommst du einen passenden ersten Schritt.
                 </p>
 
             </div>
 
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
 
-                {cards.map(card => (
+                {situations.map((item, index) => (
 
                     <button
-                        key={card.id}
-                        onClick={() => setActive(card.id)}
-                        className={`p-6 rounded-2xl text-left border ${
-                            active === card.id
-                                ? "bg-teal-50 border-teal-400"
-                                : "bg-white border-slate-200"
+                        key={item.id}
+                        onClick={() => setSelected(index)}
+                        className={`text-left p-6 rounded-2xl border-2 transition-all ${
+                            selected === index
+                                ? "bg-teal-50 border-teal-400 shadow-lg"
+                                : "bg-white border-slate-200 hover:border-teal-300 hover:shadow-md"
                         }`}
                     >
 
-                        <Icon
-                            name={card.icon}
-                            className="w-8 h-8 text-teal-600 mb-4"
-                        />
+                        <div className={`w-12 h-12 rounded-xl flex items-center justify-center mb-4 ${
+                            selected === index
+                                ? "bg-teal-500 text-white"
+                                : "bg-teal-100 text-teal-600"
+                        }`}>
 
-                        <h3 className="font-bold text-lg">
-                            {card.title}
+                            <Icon
+                                name={item.icon}
+                                className="w-6 h-6"
+                            />
+
+                        </div>
+
+                        <h3 className="font-bold text-lg text-slate-900">
+                            {item.title}
                         </h3>
 
-                        <p className="text-sm text-slate-600 mt-2">
-                            {card.text}
+                        <p className="text-sm text-slate-600 mt-2 leading-relaxed">
+                            {item.situation}
                         </p>
 
                     </button>
@@ -1764,20 +2029,64 @@ function FirstStepSection() {
             </div>
 
 
-            {active && (
+            {current && (
 
-                <div className="bg-white p-8 rounded-2xl shadow-md border border-slate-200">
+                <div className="bg-white rounded-3xl p-6 sm:p-8 shadow-xl border border-teal-200">
 
-                    <h3 className="text-xl font-bold mb-3">
-                        Dein erster Schritt
-                    </h3>
+                    <div className="flex items-start gap-4">
 
-                    <p className="text-slate-700">
+                        <div className="w-12 h-12 shrink-0 rounded-xl bg-teal-100 text-teal-600 flex items-center justify-center">
 
-                        Du musst die Situation nicht alleine lösen.
-                        Suche dir eine Vertrauensperson und erzähle ihr, was passiert ist.
+                            <Icon
+                                name={current.icon}
+                                className="w-6 h-6"
+                            />
 
-                    </p>
+                        </div>
+
+                        <div>
+
+                            <span className="text-xs font-bold text-teal-600 uppercase tracking-wide">
+                                Dein erster Schritt
+                            </span>
+
+                            <h2 className="text-2xl font-bold text-slate-900 mt-1">
+                                {current.title}
+                            </h2>
+
+                        </div>
+
+                    </div>
+
+
+                    <div className="mt-6 grid grid-cols-1 md:grid-cols-2 gap-5">
+
+                        <div className="bg-slate-50 rounded-2xl p-6 border border-slate-200">
+
+                            <h3 className="font-bold text-slate-900 mb-2">
+                                Was du tun kannst
+                            </h3>
+
+                            <p className="text-slate-700 text-sm leading-relaxed">
+                                {current.answer}
+                            </p>
+
+                        </div>
+
+
+                        <div className="bg-teal-50 rounded-2xl p-6 border border-teal-200">
+
+                            <h3 className="font-bold text-teal-900 mb-2">
+                                Wichtig
+                            </h3>
+
+                            <p className="text-teal-900 text-sm leading-relaxed">
+                                {current.tip}
+                            </p>
+
+                        </div>
+
+                    </div>
 
                 </div>
 
