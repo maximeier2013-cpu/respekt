@@ -1366,24 +1366,19 @@ function ChatSimulatorSection() {
             time: "14:10",
             reactions: [
                 {
-                    text: "Ich schreibe: „Lasst das bitte. Das ist nicht okay.“",
-                    type: "good",
-                    feedback: "Gut reagiert! Du setzt eine klare Grenze und machst deutlich, dass du bei der Situation nicht mitmachst."
+                    text: "„Lasst das bitte. Das ist nicht okay.“",
+                    correct: true,
+                    feedback: "Gut reagiert! Du setzt eine klare Grenze und machst nicht bei der Situation mit."
                 },
                 {
-                    text: "Ich schreibe „HAHA“ dazu.",
-                    type: "bad",
-                    feedback: "Damit verstärkst du die Situation. Auch wenn es als Spaß gemeint ist, kann das für die betroffene Person verletzend sein."
+                    text: "„HAHA 😂“",
+                    correct: false,
+                    feedback: "Damit machst du bei der Situation mit. Auch ein Lachen kann für die betroffene Person verletzend sein."
                 },
                 {
-                    text: "Ich leite das Bild weiter.",
-                    type: "bad",
-                    feedback: "Das solltest du nicht tun. Durch Weiterleiten verbreitet sich das Bild noch weiter."
-                },
-                {
-                    text: "Ich sichere die Nachricht und hole Hilfe.",
-                    type: "good",
-                    feedback: "Das ist sinnvoll. Sichere Beweise und wende dich an eine Vertrauensperson, wenn die Situation weitergeht."
+                    text: "Das Bild weiterleiten",
+                    correct: false,
+                    feedback: "Das solltest du nicht tun. Dadurch verbreitet sich das Bild noch weiter."
                 }
             ]
         },
@@ -1394,19 +1389,19 @@ function ChatSimulatorSection() {
             time: "14:16",
             reactions: [
                 {
-                    text: "Ich schreibe: „Lasst sie einfach drin.“",
-                    type: "good",
-                    feedback: "Gut! Du stellst dich gegen die Ausgrenzung und machst deutlich, dass Mia dazugehört."
+                    text: "„Lasst sie einfach drin.“",
+                    correct: true,
+                    feedback: "Gut! Du stellst dich gegen die Ausgrenzung und zeigst, dass Mia dazugehört."
                 },
                 {
                     text: "Ich stimme zu und mache mit.",
-                    type: "bad",
-                    feedback: "Damit unterstützt du die Ausgrenzung. Besser ist es, niemanden absichtlich aus einer Gruppe auszuschließen."
+                    correct: false,
+                    feedback: "Damit unterstützt du die Ausgrenzung. Besser ist es, niemanden absichtlich auszuschließen."
                 },
                 {
                     text: "Ich schreibe Mia privat und frage, ob alles okay ist.",
-                    type: "good",
-                    feedback: "Das kann sehr hilfreich sein. Du zeigst Mia, dass sie nicht allein ist."
+                    correct: true,
+                    feedback: "Das ist eine gute Idee. Du zeigst Mia, dass sie nicht allein ist."
                 }
             ]
         },
@@ -1417,19 +1412,19 @@ function ChatSimulatorSection() {
             time: "14:23",
             reactions: [
                 {
-                    text: "Ich frage, ob wir den Beitrag melden können.",
-                    type: "good",
-                    feedback: "Gute Reaktion! Beleidigende Inhalte können gemeldet werden. Außerdem solltest du sie nicht weiterverbreiten."
+                    text: "Ich melde den beleidigenden Beitrag.",
+                    correct: true,
+                    feedback: "Gut reagiert! Beleidigende Inhalte können gemeldet werden. Verbreite sie außerdem nicht weiter."
                 },
                 {
-                    text: "Ich schicke den Beitrag an weitere Leute.",
-                    type: "bad",
+                    text: "Ich schicke den Beitrag an andere weiter.",
+                    correct: false,
                     feedback: "Dadurch verbreitet sich der verletzende Inhalt weiter. Teile ihn nicht unnötig."
                 },
                 {
-                    text: "Ich schreibe Jonas privat und frage, ob er Unterstützung braucht.",
-                    type: "good",
-                    feedback: "Sehr gut. Du unterstützt die betroffene Person direkt und gibst ihr die Möglichkeit, darüber zu sprechen."
+                    text: "Ich frage Jonas privat, ob er Hilfe braucht.",
+                    correct: true,
+                    feedback: "Sehr gut. Du unterstützt die betroffene Person direkt."
                 }
             ]
         },
@@ -1440,59 +1435,62 @@ function ChatSimulatorSection() {
             time: "14:31",
             reactions: [
                 {
-                    text: "Ich frage zuerst, ob die Information überhaupt stimmt.",
-                    type: "good",
-                    feedback: "Sinnvoll. Bevor du etwas weiterverbreitest, solltest du nicht einfach ungeprüfte Behauptungen übernehmen."
+                    text: "„Lasst uns keine Gerüchte verbreiten.“",
+                    correct: true,
+                    feedback: "Gut reagiert! Du setzt eine klare Grenze und verhinderst, dass sich das Gerücht weiterverbreitet."
                 },
                 {
                     text: "Ich schicke die Nachricht an meine Freunde.",
-                    type: "bad",
-                    feedback: "Das kann ein Gerücht weiterverbreiten und Max zusätzlich belasten."
+                    correct: false,
+                    feedback: "Damit verbreitest du das Gerücht weiter. Auch wenn du nicht weißt, ob es stimmt, kann es Max schaden."
                 },
                 {
-                    text: "Ich schreibe: „Lasst uns keine Gerüchte verbreiten.“",
-                    type: "good",
-                    feedback: "Gut reagiert! Du stoppst die weitere Verbreitung und setzt eine klare Grenze."
+                    text: "Ich frage zuerst, ob die Information überhaupt stimmt.",
+                    correct: true,
+                    feedback: "Das ist sinnvoll. Ungeprüfte Behauptungen sollten nicht einfach weiterverbreitet werden."
                 }
             ]
         },
 
         {
-            sender: "Ben",
-            text: "Warum antwortet eigentlich niemand auf Paul?",
+            sender: "Paul",
+            text: "Warum antwortet eigentlich niemand auf mich?",
             time: "14:38",
             reactions: [
                 {
                     text: "Ich antworte Paul und beziehe ihn ins Gespräch ein.",
-                    type: "good",
-                    feedback: "Das ist eine gute Möglichkeit. Du zeigst Paul, dass er nicht ignoriert wird."
+                    correct: true,
+                    feedback: "Gut! Du zeigst Paul, dass er nicht ignoriert wird und zum Gespräch dazugehört."
                 },
                 {
                     text: "Ich ignoriere ihn ebenfalls.",
-                    type: "bad",
-                    feedback: "Dadurch kann sich Paul noch stärker ausgeschlossen fühlen."
+                    correct: false,
+                    feedback: "Dadurch kann Paul sich noch stärker ausgeschlossen fühlen."
                 },
                 {
-                    text: "Ich frage ihn privat, ob alles okay ist.",
-                    type: "good",
-                    feedback: "Gut! Eine kurze persönliche Nachricht kann zeigen, dass jemand nicht allein ist."
+                    text: "Ich schreibe ihm privat und frage, ob alles okay ist.",
+                    correct: true,
+                    feedback: "Eine gute Reaktion. Du zeigst ihm, dass du seine Situation ernst nimmst."
                 }
             ]
         }
     ];
 
+
     const [selectedMessage, setSelectedMessage] = useState(null);
     const [selectedReaction, setSelectedReaction] = useState(null);
 
-    const currentMessage =
-        selectedMessage !== null
-            ? messages[selectedMessage]
-            : null;
 
-    const currentReaction =
-        selectedReaction !== null && currentMessage
-            ? currentMessage.reactions[selectedReaction]
-            : null;
+    function selectMessage(index) {
+        setSelectedMessage(index);
+        setSelectedReaction(null);
+    }
+
+
+    function selectReaction(index) {
+        setSelectedReaction(index);
+    }
+
 
     return (
 
@@ -1513,13 +1511,15 @@ function ChatSimulatorSection() {
 
                 </div>
 
-                <h1 className="text-3xl sm:text-4xl font-extrabold">
+
+                <h1 className="text-3xl sm:text-4xl font-extrabold text-slate-900">
                     Was würdest du tun?
                 </h1>
 
+
                 <p className="text-slate-600 max-w-2xl mx-auto">
-                    Klicke auf verschiedene Nachrichten im Klassenchat und
-                    entscheide, wie du reagieren würdest.
+                    Klicke auf eine Nachricht und entscheide,
+                    wie du reagieren würdest.
                 </p>
 
             </div>
@@ -1528,25 +1528,18 @@ function ChatSimulatorSection() {
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
 
 
-                {/* KLASSENCHAT */}
+                {/* LINKER BEREICH – CHAT */}
 
                 <div className="bg-slate-900 rounded-3xl p-6 shadow-xl">
 
                     <div className="flex items-center justify-between border-b border-slate-700 pb-4 mb-5">
 
-                        <div className="text-white font-bold flex items-center gap-2">
-
-                            <Icon
-                                name="users"
-                                className="w-5 h-5 text-teal-400"
-                            />
-
-                            Klassengruppe
-
+                        <div className="text-white font-bold">
+                            💬 Klassengruppe
                         </div>
 
                         <span className="text-xs text-slate-400">
-                            {messages.length} Situationen
+                            Klicke auf eine Nachricht
                         </span>
 
                     </div>
@@ -1558,14 +1551,12 @@ function ChatSimulatorSection() {
 
                             <button
                                 key={index}
-                                onClick={() => {
-                                    setSelectedMessage(index);
-                                    setSelectedReaction(null);
-                                }}
-                                className={`w-full text-left p-4 rounded-xl transition-all ${
+                                type="button"
+                                onClick={() => selectMessage(index)}
+                                className={`w-full text-left p-4 rounded-xl border transition-all ${
                                     selectedMessage === index
-                                        ? "bg-teal-500/20 border border-teal-400"
-                                        : "bg-slate-800 border border-slate-800 hover:border-slate-600"
+                                        ? "bg-teal-500/20 border-teal-400"
+                                        : "bg-slate-800 border-slate-800 hover:border-slate-600"
                                 }`}
                             >
 
@@ -1581,6 +1572,7 @@ function ChatSimulatorSection() {
 
                                 </div>
 
+
                                 <p className="text-white text-sm mt-1">
                                     {message.text}
                                 </p>
@@ -1594,7 +1586,7 @@ function ChatSimulatorSection() {
                 </div>
 
 
-                {/* REAKTION */}
+                {/* RECHTER BEREICH – REAKTION */}
 
                 <div className="bg-white rounded-3xl p-6 sm:p-8 shadow-md border border-slate-200">
 
@@ -1602,23 +1594,14 @@ function ChatSimulatorSection() {
                         Deine Reaktion
                     </h2>
 
-                    <p className="text-sm text-slate-500 mb-6">
-                        Wähle zuerst eine Nachricht aus.
-                    </p>
 
-
-                    {currentMessage === null ? (
+                    {selectedMessage === null ? (
 
                         <div className="bg-slate-50 rounded-2xl p-6 text-center">
 
-                            <Icon
-                                name="mouse-pointer-click"
-                                className="w-10 h-10 mx-auto text-slate-400 mb-3"
-                            />
-
-                            <p className="text-sm text-slate-500">
+                            <p className="text-slate-500 text-sm">
                                 Klicke links auf eine Nachricht,
-                                um verschiedene Reaktionen zu testen.
+                                um mögliche Reaktionen zu sehen.
                             </p>
 
                         </div>
@@ -1627,19 +1610,21 @@ function ChatSimulatorSection() {
 
                         <div className="space-y-3">
 
-                            {currentMessage.reactions.map((reaction, index) => {
+                            <p className="text-sm text-slate-500 mb-4">
+                                Wie würdest du auf diese Nachricht reagieren?
+                            </p>
 
-                                const isSelected =
-                                    selectedReaction === index;
 
-                                return (
+                            {messages[selectedMessage].reactions.map(
+                                (reaction, index) => (
 
                                     <button
                                         key={index}
-                                        onClick={() => setSelectedReaction(index)}
+                                        type="button"
+                                        onClick={() => selectReaction(index)}
                                         className={`w-full text-left p-4 rounded-xl border-2 transition-all ${
-                                            isSelected
-                                                ? reaction.type === "good"
+                                            selectedReaction === index
+                                                ? reaction.correct
                                                     ? "bg-green-50 border-green-400"
                                                     : "bg-red-50 border-red-400"
                                                 : "border-slate-200 hover:border-teal-300 hover:bg-slate-50"
@@ -1652,18 +1637,15 @@ function ChatSimulatorSection() {
                                                 {reaction.text}
                                             </span>
 
-                                            {isSelected && (
 
-                                                <span
-                                                    className={
-                                                        reaction.type === "good"
-                                                            ? "text-green-600 text-xl font-bold"
-                                                            : "text-red-500 text-xl font-bold"
-                                                    }
-                                                >
-                                                    {reaction.type === "good"
-                                                        ? "✓"
-                                                        : "✕"}
+                                            {selectedReaction === index && (
+
+                                                <span className={
+                                                    reaction.correct
+                                                        ? "text-green-600 font-bold text-xl"
+                                                        : "text-red-500 font-bold text-xl"
+                                                }>
+                                                    {reaction.correct ? "✓" : "✕"}
                                                 </span>
 
                                             )}
@@ -1672,62 +1654,50 @@ function ChatSimulatorSection() {
 
                                     </button>
 
-                                );
+                                )
+                            )}
 
-                            })}
+
+                            {selectedReaction !== null && (
+
+                                <div className={`mt-5 p-5 rounded-2xl border ${
+                                    messages[selectedMessage]
+                                        .reactions[selectedReaction]
+                                        .correct
+                                        ? "bg-green-50 border-green-200"
+                                        : "bg-orange-50 border-orange-200"
+                                }`}>
+
+                                    <h3 className={`font-bold mb-2 ${
+                                        messages[selectedMessage]
+                                            .reactions[selectedReaction]
+                                            .correct
+                                            ? "text-green-800"
+                                            : "text-orange-800"
+                                    }`}>
+
+                                        {messages[selectedMessage]
+                                            .reactions[selectedReaction]
+                                            .correct
+                                            ? "Gut reagiert!"
+                                            : "Das geht besser!"}
+
+                                    </h3>
 
 
-                            {currentReaction && (
+                                    <p className={`text-sm leading-relaxed ${
+                                        messages[selectedMessage]
+                                            .reactions[selectedReaction]
+                                            .correct
+                                            ? "text-green-800"
+                                            : "text-orange-800"
+                                    }`}>
 
-                                <div
-                                    className={`mt-5 rounded-2xl p-5 border ${
-                                        currentReaction.type === "good"
-                                            ? "bg-green-50 border-green-200"
-                                            : "bg-orange-50 border-orange-200"
-                                    }`}
-                                >
+                                        {messages[selectedMessage]
+                                            .reactions[selectedReaction]
+                                            .feedback}
 
-                                    <div className="flex items-start gap-3">
-
-                                        <span
-                                            className={`text-2xl font-bold ${
-                                                currentReaction.type === "good"
-                                                    ? "text-green-600"
-                                                    : "text-orange-500"
-                                            }`}
-                                        >
-                                            {currentReaction.type === "good"
-                                                ? "✓"
-                                                : "!"}
-                                        </span>
-
-                                        <div>
-
-                                            <h3
-                                                className={`font-bold mb-1 ${
-                                                    currentReaction.type === "good"
-                                                        ? "text-green-800"
-                                                        : "text-orange-800"
-                                                }`}
-                                            >
-                                                {currentReaction.type === "good"
-                                                    ? "Gute Reaktion"
-                                                    : "Überlege noch einmal"}
-                                            </h3>
-
-                                            <p
-                                                className={`text-sm leading-relaxed ${
-                                                    currentReaction.type === "good"
-                                                        ? "text-green-800"
-                                                        : "text-orange-800"
-                                                }`}
-                                            >
-                                                {currentReaction.feedback}
-                                            </p>
-
-                                        </div>
-
-                                    </div>
+                                    </p>
 
                                 </div>
 
@@ -1744,7 +1714,6 @@ function ChatSimulatorSection() {
         </div>
     );
 }
-
 
 /* =========================
    CYBERMOBBING CHECK
