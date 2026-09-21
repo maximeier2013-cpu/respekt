@@ -995,7 +995,6 @@ function InfoCard({ title, text }) {
 function ScenariosSection() {
 
     const scenarios = [
-
         {
             title: "Situation 1: Das peinliche Foto",
             text: "In eurem Klassenchat wird ein peinliches Bild einer Mitschülerin gepostet.",
@@ -1100,17 +1099,29 @@ function ScenariosSection() {
                 }
             ]
         }
-
     ];
 
 
+    // Für jede Situation wird die Auswahl separat gespeichert.
     const [answers, setAnswers] = useState({});
+
+
+    const chooseAnswer = (scenarioIndex, optionIndex) => {
+
+        setAnswers(prevAnswers => ({
+            ...prevAnswers,
+            [scenarioIndex]: optionIndex
+        }));
+
+    };
 
 
     return (
 
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-10">
 
+
+            {/* Überschrift */}
 
             <div className="text-center space-y-4">
 
@@ -1141,39 +1152,59 @@ function ScenariosSection() {
             </div>
 
 
-            {scenarios.map((scenario, index) => {
+            {/* Situationen */}
 
-                const selectedAnswer = answers[index];
+            {scenarios.map((scenario, scenarioIndex) => {
+
+                const selectedAnswer =
+                    answers[scenarioIndex];
+
+                const selectedOption =
+                    selectedAnswer !== undefined
+                        ? scenario.options[selectedAnswer]
+                        : null;
+
 
                 return (
 
                     <div
-                        key={index}
+                        key={scenarioIndex}
                         className="bg-white rounded-3xl p-6 sm:p-8 shadow-md border border-slate-200 space-y-6"
                     >
 
 
+                        {/* Situation */}
+
                         <div className="flex items-start space-x-4">
 
                             <div className="w-10 h-10 shrink-0 bg-slate-900 text-white rounded-xl flex items-center justify-center font-bold">
-                                {index + 1}
+
+                                {scenarioIndex + 1}
+
                             </div>
 
 
                             <div>
 
                                 <h3 className="text-xl font-bold text-slate-900">
+
                                     {scenario.title}
+
                                 </h3>
 
+
                                 <p className="text-slate-600 mt-2 leading-relaxed">
+
                                     {scenario.text}
+
                                 </p>
 
                             </div>
 
                         </div>
 
+
+                        {/* Antworten */}
 
                         <div className="space-y-3">
 
@@ -1187,11 +1218,12 @@ function ScenariosSection() {
 
                                     <button
                                         key={optionIndex}
+                                        type="button"
                                         onClick={() =>
-                                            setAnswers({
-                                                ...answers,
-                                                [index]: optionIndex
-                                            })
+                                            chooseAnswer(
+                                                scenarioIndex,
+                                                optionIndex
+                                            )
                                         }
                                         className={`w-full text-left p-4 rounded-xl border-2 transition-all ${
                                             isSelected
@@ -1205,24 +1237,27 @@ function ScenariosSection() {
                                         <div className="flex items-center justify-between gap-4">
 
                                             <span className="text-sm font-medium text-slate-800">
+
                                                 {option.text}
+
                                             </span>
 
 
                                             {isSelected && (
 
-                                                <Icon
-                                                    name={
-                                                        option.correct
-                                                            ? "check-circle"
-                                                            : "x-circle"
-                                                    }
-                                                    className={`w-6 h-6 shrink-0 ${
+                                                <span
+                                                    className={`text-xl font-bold ${
                                                         option.correct
                                                             ? "text-green-600"
                                                             : "text-red-500"
                                                     }`}
-                                                />
+                                                >
+
+                                                    {option.correct
+                                                        ? "✓"
+                                                        : "✕"}
+
+                                                </span>
 
                                             )}
 
@@ -1237,43 +1272,46 @@ function ScenariosSection() {
                         </div>
 
 
-                        {selectedAnswer !== undefined && (
+                        {/* Rückmeldung */}
+
+                        {selectedOption && (
 
                             <div
                                 className={`rounded-2xl p-5 border ${
-                                    scenario.options[selectedAnswer].correct
+                                    selectedOption.correct
                                         ? "bg-green-50 border-green-200"
                                         : "bg-orange-50 border-orange-200"
                                 }`}
                             >
 
-                                <div className="flex items-start space-x-3">
+                                <div className="flex items-start gap-3">
 
-                                    <Icon
-                                        name={
-                                            scenario.options[selectedAnswer].correct
-                                                ? "check-circle"
-                                                : "lightbulb"
-                                        }
-                                        className={`w-6 h-6 shrink-0 mt-0.5 ${
-                                            scenario.options[selectedAnswer].correct
+                                    <div
+                                        className={`text-2xl font-bold ${
+                                            selectedOption.correct
                                                 ? "text-green-600"
                                                 : "text-orange-500"
                                         }`}
-                                    />
+                                    >
+
+                                        {selectedOption.correct
+                                            ? "✓"
+                                            : "!"}
+
+                                    </div>
 
 
                                     <div>
 
                                         <h4
                                             className={`font-bold mb-1 ${
-                                                scenario.options[selectedAnswer].correct
+                                                selectedOption.correct
                                                     ? "text-green-800"
                                                     : "text-orange-800"
                                             }`}
                                         >
 
-                                            {scenario.options[selectedAnswer].correct
+                                            {selectedOption.correct
                                                 ? "Gut reagiert!"
                                                 : "Das geht besser!"}
 
@@ -1282,12 +1320,14 @@ function ScenariosSection() {
 
                                         <p
                                             className={`text-sm leading-relaxed ${
-                                                scenario.options[selectedAnswer].correct
+                                                selectedOption.correct
                                                     ? "text-green-800"
                                                     : "text-orange-800"
                                             }`}
                                         >
-                                            {scenario.options[selectedAnswer].feedback}
+
+                                            {selectedOption.feedback}
+
                                         </p>
 
                                     </div>
