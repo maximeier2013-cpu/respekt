@@ -1000,10 +1000,26 @@ function ScenariosSection() {
             title: "Situation 1: Das peinliche Foto",
             text: "In eurem Klassenchat wird ein peinliches Bild einer Mitschülerin gepostet.",
             options: [
-                "Ich lache mit.",
-                "Ich leite das Bild weiter.",
-                "Ich schreibe, dass das nicht okay ist und leite es nicht weiter.",
-                "Ich ignoriere es komplett."
+                {
+                    text: "Ich lache mit.",
+                    correct: false,
+                    feedback: "Das hilft der betroffenen Person nicht. Auch ein Like oder Lachen kann dazu beitragen, dass sich die Situation verschlimmert."
+                },
+                {
+                    text: "Ich leite das Bild weiter.",
+                    correct: false,
+                    feedback: "Das solltest du nicht tun. Bilder ohne Zustimmung weiterzuleiten kann die betroffene Person noch stärker belasten."
+                },
+                {
+                    text: "Ich schreibe, dass das nicht okay ist und leite es nicht weiter.",
+                    correct: true,
+                    feedback: "Gut reagiert! Du machst klar, dass das Verhalten nicht okay ist und sorgst dafür, dass das Bild nicht weiterverbreitet wird."
+                },
+                {
+                    text: "Ich ignoriere es komplett.",
+                    correct: false,
+                    feedback: "Nicht mitzumachen ist wichtig. Noch besser ist es aber, die betroffene Person zu unterstützen oder eine Vertrauensperson einzuschalten."
+                }
             ]
         },
 
@@ -1011,9 +1027,21 @@ function ScenariosSection() {
             title: "Situation 2: Beleidigung auf Social Media",
             text: "Unter dem Post eines Mitschülers stehen fiese Kommentare über sein Aussehen.",
             options: [
-                "Ich like die fiesen Kommentare.",
-                "Ich schreibe einen positiven Gegenkommentar und melde die Beleidigungen.",
-                "Ich mache einen Screenshot und schicke ihn weiter."
+                {
+                    text: "Ich like die fiesen Kommentare.",
+                    correct: false,
+                    feedback: "Damit unterstützt du die verletzenden Kommentare. Besser ist es, nicht mitzumachen und die betroffene Person zu unterstützen."
+                },
+                {
+                    text: "Ich schreibe einen positiven Gegenkommentar und melde die Beleidigungen.",
+                    correct: true,
+                    feedback: "Gut reagiert! Du stellst dich gegen die Beleidigungen und kannst zusätzlich dafür sorgen, dass die Kommentare gemeldet werden."
+                },
+                {
+                    text: "Ich mache einen Screenshot und schicke ihn weiter.",
+                    correct: false,
+                    feedback: "Screenshots können als Beweis sinnvoll sein. Sie sollten aber nicht einfach weiterverbreitet werden. Sichere sie und zeige sie einer Vertrauensperson."
+                }
             ]
         },
 
@@ -1021,8 +1049,16 @@ function ScenariosSection() {
             title: "Situation 3: Ausgrenzung",
             text: "Ein Mitschüler wird absichtlich aus einer gemeinsamen Projektgruppe ausgeschlossen.",
             options: [
-                "Betrifft mich nicht.",
-                "Ich frage den Mitschüler, ob er mit uns arbeiten möchte."
+                {
+                    text: "Betrifft mich nicht.",
+                    correct: false,
+                    feedback: "Wegschauen kann dazu führen, dass die betroffene Person sich noch stärker ausgeschlossen fühlt. Du kannst ihr zeigen, dass sie nicht allein ist."
+                },
+                {
+                    text: "Ich frage den Mitschüler, ob er mit uns arbeiten möchte.",
+                    correct: true,
+                    feedback: "Gut reagiert! Du beziehst die Person ein und zeigst, dass sie willkommen ist."
+                }
             ]
         },
 
@@ -1030,8 +1066,38 @@ function ScenariosSection() {
             title: "Situation 4: Online-Gerücht",
             text: "Über eine Schülerin wird ein falsches Gerücht verbreitet.",
             options: [
-                "Ich frage sie privat, was passiert ist.",
-                "Ich frage in der Gruppe nach weiteren Details."
+                {
+                    text: "Ich frage sie privat, was passiert ist.",
+                    correct: true,
+                    feedback: "Gut reagiert! Du verbreitest das Gerücht nicht weiter und gibst der betroffenen Person die Möglichkeit, selbst zu erzählen, was passiert ist."
+                },
+                {
+                    text: "Ich frage in der Gruppe nach weiteren Details.",
+                    correct: false,
+                    feedback: "Das kann dazu führen, dass das Gerücht noch weiterverbreitet wird. Besser ist es, nicht darüber zu spekulieren."
+                }
+            ]
+        },
+
+        {
+            title: "Situation 5: Gemeiner Klassenchat",
+            text: "Mehrere Personen machen sich im Klassenchat über einen Mitschüler lustig.",
+            options: [
+                {
+                    text: "Ich mache einen Witz über ihn.",
+                    correct: false,
+                    feedback: "Damit machst du bei der Situation mit. Auch wenn es als Witz gemeint ist, kann es die betroffene Person verletzen."
+                },
+                {
+                    text: "Ich schreibe: „Lasst das bitte. Das ist nicht okay.“",
+                    correct: true,
+                    feedback: "Gut reagiert! Du setzt eine klare Grenze und zeigst, dass du bei den Beleidigungen nicht mitmachst."
+                },
+                {
+                    text: "Ich leite die Nachrichten an andere Klassen weiter.",
+                    correct: false,
+                    feedback: "Dadurch könnten noch mehr Menschen davon erfahren. Sichere Beweise lieber und zeige sie einer Vertrauensperson."
+                }
             ]
         }
 
@@ -1045,82 +1111,198 @@ function ScenariosSection() {
 
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-10">
 
+
             <div className="text-center space-y-4">
+
+                <div className="inline-flex items-center space-x-2 bg-blue-100 text-blue-700 px-4 py-2 rounded-full text-sm font-bold">
+
+                    <Icon
+                        name="message-circle-question"
+                        className="w-5 h-5"
+                    />
+
+                    <span>
+                        Interaktive Situationen
+                    </span>
+
+                </div>
+
 
                 <h1 className="text-3xl sm:text-4xl font-extrabold">
                     Was würdest du tun?
                 </h1>
 
-                <p className="text-slate-600">
-                    Teste verschiedene realistische Schulsituationen.
+
+                <p className="text-slate-600 max-w-2xl mx-auto">
+                    Lies dir die Situationen durch und entscheide dich für eine Reaktion.
+                    Danach bekommst du direkt eine Rückmeldung.
                 </p>
 
             </div>
 
 
-            {scenarios.map((scenario, index) => (
+            {scenarios.map((scenario, index) => {
 
-                <div
-                    key={index}
-                    className="bg-white rounded-2xl p-6 sm:p-8 shadow-md border border-slate-200 space-y-5"
-                >
+                const selectedAnswer = answers[index];
 
-                    <h3 className="text-xl font-bold">
-                        {scenario.title}
-                    </h3>
+                return (
 
-                    <p className="bg-slate-50 p-4 rounded-xl text-sm">
-                        {scenario.text}
-                    </p>
+                    <div
+                        key={index}
+                        className="bg-white rounded-3xl p-6 sm:p-8 shadow-md border border-slate-200 space-y-6"
+                    >
 
 
-                    <div className="space-y-2">
+                        <div className="flex items-start space-x-4">
 
-                        {scenario.options.map((option, optionIndex) => (
-
-                            <button
-                                key={optionIndex}
-                                onClick={() =>
-                                    setAnswers({
-                                        ...answers,
-                                        [index]: optionIndex
-                                    })
-                                }
-                                className={`w-full text-left p-4 rounded-xl border text-sm ${
-                                    answers[index] === optionIndex
-                                        ? "bg-teal-50 border-teal-400"
-                                        : "border-slate-200 hover:bg-slate-50"
-                                }`}
-                            >
-
-                                {option}
-
-                            </button>
-
-                        ))}
-
-                    </div>
+                            <div className="w-10 h-10 shrink-0 bg-slate-900 text-white rounded-xl flex items-center justify-center font-bold">
+                                {index + 1}
+                            </div>
 
 
-                    {answers[index] !== undefined && (
+                            <div>
 
-                        <div className="bg-teal-50 border border-teal-200 rounded-xl p-4 text-sm">
+                                <h3 className="text-xl font-bold text-slate-900">
+                                    {scenario.title}
+                                </h3>
 
-                            <strong>
-                                Tipp:
-                            </strong>
+                                <p className="text-slate-600 mt-2 leading-relaxed">
+                                    {scenario.text}
+                                </p>
 
-                            <br />
-
-                            Nicht mitmachen, nichts weiterverbreiten und die betroffene Person unterstützen.
+                            </div>
 
                         </div>
 
-                    )}
 
-                </div>
+                        <div className="space-y-3">
 
-            ))}
+                            {scenario.options.map((option, optionIndex) => {
+
+                                const isSelected =
+                                    selectedAnswer === optionIndex;
+
+
+                                return (
+
+                                    <button
+                                        key={optionIndex}
+                                        onClick={() =>
+                                            setAnswers({
+                                                ...answers,
+                                                [index]: optionIndex
+                                            })
+                                        }
+                                        className={`w-full text-left p-4 rounded-xl border-2 transition-all ${
+                                            isSelected
+                                                ? option.correct
+                                                    ? "bg-green-50 border-green-400"
+                                                    : "bg-red-50 border-red-400"
+                                                : "border-slate-200 hover:border-teal-300 hover:bg-slate-50"
+                                        }`}
+                                    >
+
+                                        <div className="flex items-center justify-between gap-4">
+
+                                            <span className="text-sm font-medium text-slate-800">
+                                                {option.text}
+                                            </span>
+
+
+                                            {isSelected && (
+
+                                                <Icon
+                                                    name={
+                                                        option.correct
+                                                            ? "check-circle"
+                                                            : "x-circle"
+                                                    }
+                                                    className={`w-6 h-6 shrink-0 ${
+                                                        option.correct
+                                                            ? "text-green-600"
+                                                            : "text-red-500"
+                                                    }`}
+                                                />
+
+                                            )}
+
+                                        </div>
+
+                                    </button>
+
+                                );
+
+                            })}
+
+                        </div>
+
+
+                        {selectedAnswer !== undefined && (
+
+                            <div
+                                className={`rounded-2xl p-5 border ${
+                                    scenario.options[selectedAnswer].correct
+                                        ? "bg-green-50 border-green-200"
+                                        : "bg-orange-50 border-orange-200"
+                                }`}
+                            >
+
+                                <div className="flex items-start space-x-3">
+
+                                    <Icon
+                                        name={
+                                            scenario.options[selectedAnswer].correct
+                                                ? "check-circle"
+                                                : "lightbulb"
+                                        }
+                                        className={`w-6 h-6 shrink-0 mt-0.5 ${
+                                            scenario.options[selectedAnswer].correct
+                                                ? "text-green-600"
+                                                : "text-orange-500"
+                                        }`}
+                                    />
+
+
+                                    <div>
+
+                                        <h4
+                                            className={`font-bold mb-1 ${
+                                                scenario.options[selectedAnswer].correct
+                                                    ? "text-green-800"
+                                                    : "text-orange-800"
+                                            }`}
+                                        >
+
+                                            {scenario.options[selectedAnswer].correct
+                                                ? "Gut reagiert!"
+                                                : "Das geht besser!"}
+
+                                        </h4>
+
+
+                                        <p
+                                            className={`text-sm leading-relaxed ${
+                                                scenario.options[selectedAnswer].correct
+                                                    ? "text-green-800"
+                                                    : "text-orange-800"
+                                            }`}
+                                        >
+                                            {scenario.options[selectedAnswer].feedback}
+                                        </p>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        )}
+
+                    </div>
+
+                );
+
+            })}
 
         </div>
     );
