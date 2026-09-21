@@ -595,6 +595,55 @@ function WhatToDoSection() {
 
     const [activeCategory, setActiveCategory] = useState("self");
 
+    const categories = [
+        {
+            id: "self",
+            label: "Wenn du selbst betroffen bist",
+            color: "red",
+            icon: "shield-alert"
+        },
+        {
+            id: "other",
+            label: "Wenn jemand anderes betroffen ist",
+            color: "orange",
+            icon: "users"
+        },
+        {
+            id: "witness",
+            label: "Wenn du Cybermobbing beobachtest",
+            color: "yellow",
+            icon: "eye"
+        },
+        {
+            id: "author",
+            label: "Wenn du selbst etwas geschrieben hast",
+            color: "green",
+            icon: "message-square-warning"
+        }
+    ];
+
+    const colorClasses = {
+        red: {
+            active: "bg-red-500 text-white border-red-500 shadow-lg shadow-red-200",
+            inactive: "bg-red-50 text-red-700 border-red-200 hover:bg-red-100",
+            icon: "bg-red-100 text-red-600"
+        },
+        orange: {
+            active: "bg-orange-500 text-white border-orange-500 shadow-lg shadow-orange-200",
+            inactive: "bg-orange-50 text-orange-700 border-orange-200 hover:bg-orange-100",
+            icon: "bg-orange-100 text-orange-600"
+        },
+        yellow: {
+            active: "bg-yellow-400 text-slate-900 border-yellow-400 shadow-lg shadow-yellow-200",
+            inactive: "bg-yellow-50 text-yellow-800 border-yellow-200 hover:bg-yellow-100",
+            icon: "bg-yellow-100 text-yellow-700"
+        },
+        green: {
+            active: "bg-green-500 text-white border-green-500 shadow-lg shadow-green-200",
+            inactive: "bg-green-50 text-green-700 border-green-200 hover:bg-green-100",
+            icon: "bg-green-100 text-green-600"
+        }
+    };
 
     return (
 
@@ -610,45 +659,85 @@ function WhatToDoSection() {
                     Hier findest du praktische Handlungsschritte für verschiedene Situationen.
                 </p>
 
+            </div>
 
-                <div className="flex flex-wrap justify-center gap-2 pt-4">
 
-                    {[
-                        ["self", "Wenn du selbst betroffen bist"],
-                        ["other", "Wenn jemand anderes betroffen ist"],
-                        ["witness", "Wenn du Cybermobbing beobachtest"],
-                        ["author", "Wenn du selbst etwas geschrieben hast"]
-                    ].map(([id, label]) => (
+            {/* AUSWAHLKARTEN */}
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+
+                {categories.map((category) => {
+
+                    const colors = colorClasses[category.color];
+                    const isActive = activeCategory === category.id;
+
+                    return (
 
                         <button
-                            key={id}
-                            onClick={() => setActiveCategory(id)}
-                            className={`px-5 py-3 rounded-xl font-semibold text-sm ${
-                                activeCategory === id
-                                    ? "bg-slate-900 text-white"
-                                    : "bg-white text-slate-700 border border-slate-200"
+                            key={category.id}
+                            onClick={() => setActiveCategory(category.id)}
+                            className={`text-left p-5 rounded-2xl border-2 transition-all duration-200 ${
+                                isActive
+                                    ? colors.active
+                                    : colors.inactive
                             }`}
                         >
-                            {label}
+
+                            <div
+                                className={`w-11 h-11 rounded-xl flex items-center justify-center mb-4 ${
+                                    isActive
+                                        ? "bg-white/20"
+                                        : colors.icon
+                                }`}
+                            >
+
+                                <Icon
+                                    name={category.icon}
+                                    className="w-6 h-6"
+                                />
+
+                            </div>
+
+                            <h3 className="font-bold text-base leading-snug">
+                                {category.label}
+                            </h3>
+
                         </button>
 
-                    ))}
+                    );
 
-                </div>
+                })}
 
             </div>
 
 
+            {/* INHALT */}
+
             <div className="bg-white rounded-3xl p-6 sm:p-10 shadow-xl border border-slate-200">
 
+
+                {/* SELBST BETROFFEN */}
 
                 {activeCategory === "self" && (
 
                     <div className="space-y-8">
 
-                        <h2 className="text-2xl font-bold">
-                            Du wirst gemobbt? Das kannst du jetzt tun:
-                        </h2>
+                        <div className="flex items-center space-x-3">
+
+                            <div className="w-12 h-12 rounded-xl bg-red-100 text-red-600 flex items-center justify-center">
+
+                                <Icon
+                                    name="shield-alert"
+                                    className="w-6 h-6"
+                                />
+
+                            </div>
+
+                            <h2 className="text-2xl font-bold text-slate-900">
+                                Du wirst gemobbt? Das kannst du jetzt tun:
+                            </h2>
+
+                        </div>
 
 
                         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -696,13 +785,28 @@ function WhatToDoSection() {
                 )}
 
 
+                {/* ANDERE BETROFFEN */}
+
                 {activeCategory === "other" && (
 
                     <div className="space-y-8">
 
-                        <h2 className="text-2xl font-bold">
-                            Jemand anderes ist betroffen:
-                        </h2>
+                        <div className="flex items-center space-x-3">
+
+                            <div className="w-12 h-12 rounded-xl bg-orange-100 text-orange-600 flex items-center justify-center">
+
+                                <Icon
+                                    name="users"
+                                    className="w-6 h-6"
+                                />
+
+                            </div>
+
+                            <h2 className="text-2xl font-bold">
+                                Jemand anderes ist betroffen:
+                            </h2>
+
+                        </div>
 
 
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -734,13 +838,28 @@ function WhatToDoSection() {
                 )}
 
 
+                {/* BEOBACHTET */}
+
                 {activeCategory === "witness" && (
 
                     <div className="space-y-8">
 
-                        <h2 className="text-2xl font-bold">
-                            Du hast Cybermobbing beobachtet:
-                        </h2>
+                        <div className="flex items-center space-x-3">
+
+                            <div className="w-12 h-12 rounded-xl bg-yellow-100 text-yellow-700 flex items-center justify-center">
+
+                                <Icon
+                                    name="eye"
+                                    className="w-6 h-6"
+                                />
+
+                            </div>
+
+                            <h2 className="text-2xl font-bold">
+                                Du hast Cybermobbing beobachtet:
+                            </h2>
+
+                        </div>
 
 
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -762,13 +881,28 @@ function WhatToDoSection() {
                 )}
 
 
+                {/* SELBST ETWAS GESCHRIEBEN */}
+
                 {activeCategory === "author" && (
 
                     <div className="space-y-8">
 
-                        <h2 className="text-2xl font-bold">
-                            Du hast selbst etwas Verletzendes geschrieben:
-                        </h2>
+                        <div className="flex items-center space-x-3">
+
+                            <div className="w-12 h-12 rounded-xl bg-green-100 text-green-600 flex items-center justify-center">
+
+                                <Icon
+                                    name="message-square-warning"
+                                    className="w-6 h-6"
+                                />
+
+                            </div>
+
+                            <h2 className="text-2xl font-bold">
+                                Du hast selbst etwas Verletzendes geschrieben:
+                            </h2>
+
+                        </div>
 
 
                         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
